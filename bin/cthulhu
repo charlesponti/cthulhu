@@ -46,7 +46,3 @@ function createNew(babyCthulhu) {
     console.log(chalk.red.bold("Must supply project name!"));
   }
 }
-
-// var cthulhu = require('../server')();
-
-// cthulhu.start();
