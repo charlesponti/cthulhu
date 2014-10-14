@@ -1,35 +1,51 @@
+[ ![Codeship Status for theponti/cthulhu](https://www.codeship.io/projects/27531250-307f-0132-aa41-62036c69ea1f/status)](https://www.codeship.io/projects/39827)
 
-This Is A Cthulhu Production
+Cthulhu
+========
 
 ![cthulhu](http://img3.wikia.nocookie.net/__cb20120509185304/powerlisting/images/9/90/Great-cthulhu.jpg)
 
 A NodeJS, ExpressJS, BackboneJS, MongoDB, & Browserify boilerplate application
 
-========
+## Requirements
+
+* NodeJS
+
+* Bower
+
+* JavaScript Ninja Powers
 
 ## Installation
 
-1. Install NPM dependencies 
+1. Clone repository
+
+  ```
+   git clone https://github.com/theponti/cthulhu.git
+  ```
+
+2. Install NPM dependencies 
 
   ```
     npm install
   ```
 
-2. Install Bower dependencies
+3. Install Bower dependencies
 
   ```
     bower install
   ```
 
-3. Edit `.json` files in `server/config/environments` and remove `.example` from names
+4. Edit `.config.js`
 
-4. Run Gulp
+5. Set your environment variables in `server/env`
+
+6. Run Gulp
 
   ```bash
     gulp
   ```
 
-5. Build Awesome App!
+6. Build Awesome App!
 
 ## Features
 
