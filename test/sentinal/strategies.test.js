@@ -8,7 +8,7 @@ describe('Sentinal Strategies', function() {
   var sentinal;
 
   beforeEach(function() {
-    sentinal = require('../../server/sentinal');
+    sentinal = require('../../src/server/sentinal');
   });
 
   describe('Facebook Strategy', function() {

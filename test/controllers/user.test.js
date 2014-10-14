@@ -17,7 +17,7 @@ describe('$userCtrl', function() {
     req = HttpFixtures.req();
     req.user = user;
     res = HttpFixtures.res();
-    $userCtrl = require('../../server/controllers/user');
+    $userCtrl = require('../../src/server/controllers/user');
   });
 
   afterEach(function() {

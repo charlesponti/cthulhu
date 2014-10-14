@@ -2,14 +2,14 @@
 
 var expect = require("chai").expect;
 var sinon = require("sinon");
-GLOBAL.Cthulhu = require('../../server')();
+GLOBAL.Cthulhu = require('../../src/server')();
 
 describe("User", function() {
 
   var user;
 
   beforeEach(function() {
-    var User = require('../../server/models/user');
+    var User = require('../../src/server/models/user');
     user = new User({ email: 'foo@foo.com'});
     user.save = sinon.spy();
   });

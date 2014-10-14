@@ -1,7 +1,7 @@
 "use strict";
 
-var config = require('../../server/config');
-var Sentinal = require("../../server/sentinal/index")(config.OAuth);
+var config = require('../../src/server/config');
+var Sentinal = require("../../src/server/sentinal/index")(config.OAuth);
 
 describe("Sentinal.Auth", function() {
 
