@@ -55,9 +55,12 @@ var UserSchema = new Schema({
 });
 
 UserSchema.pre('save', function(next) {
-  if (this.isNew && !this.is_connected()) {
-    this.confirmAccountToken = this.makeToken();
-    Cthulhu.mailer.emails.users.welcome(this);
+  if (this.isNew) {
+    this.accessToken = this.makeToken();
+    if (!this.is_connected()) {
+      this.confirmAccountToken = this.makeToken();
+      Cthulhu.mailer.emails.users.welcome(this);
+    }
   }
   next();
 });
