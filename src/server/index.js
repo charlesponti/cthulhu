@@ -15,7 +15,6 @@ var _ = require('lodash');
 var http = require('http');
 var swig = require('swig');
 var path = require('path');
-var nconf = require('nconf');
 var chalk = require('chalk');
 var lusca = require('lusca');
 var io = require('socket.io');

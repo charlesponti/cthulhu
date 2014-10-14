@@ -2,7 +2,7 @@
   "name": "cthulhu",
   "version": "1.0.0",
   "private": false,
-  "main": "server/main.js",
+  "main": "bin/cthulhu",
   "repository": "http://github.com/theponti/cthulhu",
   "scripts": {
     "test": "NODE_ENV=test mocha --recursive test",
@@ -10,9 +10,6 @@
     "supervise": "supervisor bin/cthulhu",
     "build-dev": "browserify -e client/scripts/main.js -t jstify -o public/scripts/bundle.dev.js -d",
     "build-min": "browserify -e client/scripts/main.js -t jstify -t uglifyify -o public/scripts/bundle.min.js"
-  },
-  "bin": {
-    "cthulhu": "./bin/cthulhu"
   },
   "dependencies": {
     "async": "^0.9.0",

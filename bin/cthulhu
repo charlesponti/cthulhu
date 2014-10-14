@@ -31,7 +31,7 @@ if (argv.env) {
 if (argv._[0]) {
   switch(argv._[0]) {
     case 'new':
-      createNew(argv._[1]);
+      Cthulhu.createNew(argv._[1]);
   }  
 }
 
