@@ -154,6 +154,12 @@ function CthulhuMiddleware() {
     };
   };
 
+  /**
+   * CSRF middleware function
+   * @param  {IncomingMessage}   req
+   * @param  {ServerResponse}   res
+   * @param  {Function} next
+   */
   this.csrf = function(req, res, next) {
     var access_token = req.query.access_token;
     if (/api/.test(req.originalUrl)) {
