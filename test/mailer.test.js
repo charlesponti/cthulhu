@@ -2,8 +2,8 @@
 
 var sinon = require('sinon');
 var expect = require('chai').expect;
-var Mailer = require('../server/mailer');
-var config = require('../server/config');
+var Mailer = require('../src/server/mailer');
+var config = require('../src/server/config');
 
 describe('Mailer', function() {
 

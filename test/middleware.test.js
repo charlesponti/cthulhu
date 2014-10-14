@@ -13,7 +13,7 @@ describe("Cthulhu Middleware", function() {
         user: null
       }
     };
-    Middleware = require("../server/helpers/middleware");
+    Middleware = require("../src/server/helpers/middleware");
   });
 
   afterEach(function() {

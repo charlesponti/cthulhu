@@ -17,6 +17,11 @@ var argv = require('optimist').argv;
 var cwd = process.cwd();
 
 /**
+ * @type {Cthulhu}
+ */
+var Cthulhu = require('../lib')(cwd);
+
+/**
  * Set Node environment if the user requests to set one
  */
 if (argv.env) {
@@ -30,19 +35,4 @@ if (argv._[0]) {
   }  
 }
 
-function createNew(babyCthulhu) {
-  if (babyCthulhu) {
-    var newPath = path.resolve(cwd, './'+babyCthulhu);
-    fs.copy(__dirname+'/../test', newPath, function(err) {
-      if (err) {
-        return console.error(err);
-      }
-      console.log(
-        chalk.purple("Baby Cthulhu successfully born! Her name is"),
-        chalk.green.bold(babyCthulhu)
-      );
-    });
-  } else {
-    console.log(chalk.red.bold("Must supply project name!"));
-  }
-}
+
