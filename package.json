@@ -6,8 +6,8 @@
   "repository": "http://github.com/theponti/cthulhu",
   "scripts": {
     "test": "NODE_ENV=test mocha --recursive test",
-    "start": "node bin/cthulhu",
-    "supervise": "supervisor bin/cthulhu",
+    "start": "node src/bin/cthulhu",
+    "supervise": "supervisor src/bin/cthulhu",
     "build-dev": "browserify -e client/scripts/main.js -t jstify -o public/scripts/bundle.dev.js -d",
     "build-min": "browserify -e client/scripts/main.js -t jstify -t uglifyify -o public/scripts/bundle.min.js"
   },
