@@ -17,12 +17,19 @@ A NodeJS, ExpressJS, BackboneJS, MongoDB, & Browserify boilerplate application
 
 ## Installation
 
-1. Clone repository
+1. Install cthulhu
 
   ```
-   git clone https://github.com/theponti/cthulhu.git
+   sudo npm install -g cthulhu
   ```
 
+2. Install Global dependencies
+  
+  ```
+    sudo npm install -g gulp
+    sudo npm install -g supervisor
+  ```
+  
 2. Install NPM dependencies 
 
   ```
