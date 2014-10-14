@@ -1,9 +1,10 @@
 {
   "name": "cthulhu",
-  "version": "1.1.0",
+  "version": "1.1.0-p1",
   "private": false,
   "main": "server/main.js",
   "repository": "http://github.com/theponti/cthulhu",
+  "description": "A NodeJS boilerplate builder",
   "scripts": {
     "test": "NODE_ENV=test mocha --recursive test",
     "start": "node src/bin/cthulhu",
@@ -64,6 +65,7 @@
     "mocha": "^1.21.5",
     "sinon": "^1.10.3",
     "supertest": "^0.13.0",
+    "supervisor": "^0.6.0",
     "uglifyify": "^2.5.0",
     "vinyl-transform": "0.0.1"
   }
