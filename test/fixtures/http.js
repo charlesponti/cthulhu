@@ -4,6 +4,8 @@ var sinon = require('sinon');
 
 exports.req = function() {
   var req = {};
+  req.body = {};
+  req.query = {};
   req.params = {};
   req.session = {};
   req.user = require("./user").instance;
