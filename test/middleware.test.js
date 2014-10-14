@@ -52,32 +52,6 @@ describe("Cthulhu middleware", function() {
     it('shoudl set the correct headers', function() {});
   });
 
-  // this.csrf = function(req, res, next) {
-  //   var access_token = req.query.access_token;
-  //   if (/api/.test(req.originalUrl)) {
-  //     if (access_token) {
-  //       User
-  //         .findOne({ accessToken: access_token })
-  //         .exec(function(err, user) {
-  //           if (err) return next(err);
-  //           if (user.accessToken == access_token) {
-  //             req.user = user;
-  //             return next();
-  //           } else {
-  //             return res.status(401).json({
-  //               message: 'You must supply access_token'
-  //             });
-  //           }
-  //         })
-  //     } else {
-  //       return res.status(401).json({
-  //         message: 'You must supply access_token'
-  //       });
-  //     }
-  //   } else {
-  //     csrf(req, res, next);
-  //   }
-  // };
   describe('.csrf', function() {
     it('should call csrf if req not /api', function() {
       req.originalUrl = '/meow';
