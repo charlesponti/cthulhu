@@ -5,7 +5,6 @@
 development.json
 production.json
 staging.json
-test.json
 
 node_modules
 
