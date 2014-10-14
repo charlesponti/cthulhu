@@ -176,7 +176,6 @@ function Cthulhu(config) {
    * Enable Lusca security
    */
   app.use(lusca({
-    csrf: true,
     csp: {
       default_src: "'self'",
       script_src:  "'self'",
@@ -190,6 +189,11 @@ function Cthulhu(config) {
     },
     xssProtection: true
   }));
+
+  /**
+   * Add CSRF (Cross-Site Request Forgery) protection
+   */
+  app.use(middleware.csrf);
 
   app.use(app.sentinal.auth.deserializeUser(function(id, done) {
     User.findOne({ _id: id }).exec(function(err, user) {

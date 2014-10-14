@@ -6,6 +6,9 @@
  */
 var _ = require('lodash');
 var chalk = require('chalk');
+var lusca = require('lusca');
+var csrf = lusca.csrf();
+var User = require('../models/user');
 
 function CthulhuMiddleware() {
   
@@ -144,6 +147,33 @@ function CthulhuMiddleware() {
       res.locals.current_user = req.user;
       next();
     };
+  };
+
+  this.csrf = function(req, res, next) {
+    var access_token = req.query.access_token;
+    if (/api/.test(req.originalUrl)) {
+      if (access_token) {
+        User
+          .findOne({ accessToken: access_token })
+          .exec(function(err, user) {
+            if (err) return next(err);
+            if (user.accessToken == access_token) {
+              req.user = user;
+              return next();
+            } else {
+              return res.status(401).json({
+                message: 'You must supply access_token'
+              });
+            }
+          })
+      } else {
+        return res.status(401).json({
+          message: 'You must supply access_token'
+        });
+      }
+    } else {
+      csrf(req, res, next);
+    }
   };
 
 }
