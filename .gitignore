@@ -1,0 +1,16 @@
+.git
+.idea
+.DS_Store
+
+development.json
+production.json
+staging.json
+test.json
+
+node_modules
+
+public/vendor
+public/scripts
+public/styles
+
+npm-debug.log

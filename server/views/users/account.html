@@ -1,0 +1,201 @@
+{% extends '../layout.html' %}
+
+{% block content %}
+  <div class="profile">
+    <div class="page-header">
+      <h1 class="text-center"> User Profile </h1>
+    </div>
+    <div class="row">
+      <div class="col-md-offset-2 col-md-8">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title"> Connected Accounts </h3>
+          </div>
+          <div class="list-group">
+            <!-- Facebook -->
+            <div class="list-group-item">
+              <h4> Facebook </h4>
+              {% if current_user.facebook.token %}
+                <div class="row">
+                  <div class="col-sm-5">
+                    <img class="social_pic" src={{current_user.getFacebookPhoto()}} />
+                  </div>
+                  <div class="col-sm-4">
+                    <p>
+                      <b> Name: </b>
+                      {{ current_user.facebook.profile.name }}
+                    </p>
+                    <p>
+                      <b> Email: </b>
+                      {{ current_user.facebook.profile.email }}
+                    </p>
+                    <a class="btn btn-danger" href="/unlink/facebook">
+                      <span class="fa fa-facebook"> Unlink Facebook </span>
+                    </a>
+                  </div>
+                </div>
+              {% else %}
+                <a class="btn btn-primary" href="/auth/facebook">
+                  <span class="fa fa-facebook"> Connect Facebook </span>
+                </a>
+              {% endif %}
+            </div>
+            <!-- Twitter -->
+            <div class="list-group-item">
+              <h4> Twitter </h4>
+              {% if current_user.twitter.token %}
+                <div class="row">
+                  <div class="col-sm-5">
+                    <img class="social_pic" src={{current_user.twitterPhoto()}} />
+                  </div>
+                  <div class="col-sm-4">
+                    <p> 
+                      <b> Name: </b>
+                      {{ current_user.twitter.profile.name }}
+                    </p>
+                    <p>
+                      <b> Screenname: </b>
+                      {{ current_user.twitter.profile.screen_name }}
+                    </p>
+                  </div>
+                  <div class="col-sm-4">
+                    <a class="btn btn-danger" href="/unlink/twitter">
+                      <span class="fa fa-twitter"></span> Unlink Twitter 
+                    </a>
+                  </div>
+                </div>
+              </div>
+              {% else %}
+                <a class="btn btn-info" href="/auth/twitter">
+                  <span class="fa fa-twitter"></span> Connect Twitter
+                </a>
+              {% endif %}
+            </div>
+            <!-- Google -->
+            <div class="list-group-item">
+              <h4> Google </h4>
+              {% if current_user.google.token %}
+                <div class="row">
+                  <div class="col-sm-4">
+                    <img class="social_pic" src={{current_user.googlePhoto()}} />
+                  </div>
+                  <div class="col-sm-4">
+                    <p>
+                      <b> Name: </b>
+                      {{ current_user.google.profile.displayName }}
+                    </p>
+                    <p>
+                      <b> Email: </b>
+                      {{ current_user.google.profile.emails[0].value }}
+                    </p>
+                    <a class="btn btn-danger" href="/unlink/google">
+                      <span class="fa fa-google-plus"></span> Unlink Google
+                    </a>
+                  </div>
+                </div>
+              {% else %}
+                <a class="btn btn-danger" href="/auth/google">
+                  <i class="fa fa-google-plus"></i> Connect Google+
+                </a>
+              {% endif %}
+            </div>
+            <!-- Foursquare -->
+            <div class="list-group-item">
+              <h4> Foursquare </h4>
+              {% if current_user.foursquare.token %}
+                <div class="row">
+                  <div class="col-sm-5">
+                    <img class="social_pic" src={{current_user.foursquarePhoto()}} />
+                  </div>
+                  <div class="col-sm-4">
+                    <p>
+                      <b> Name: </b>
+                      {{ current_user.foursquareName() }}
+                    </p>
+                  </div>
+                  <div class="col-sm-4">
+                    <a class="btn btn-info" href="/unlink/foursquare">
+                      <i class="fa fa-foursquare"></i> Unlink Foursquare
+                    </a>
+                  </div>
+                </div>
+              {% else %}
+                <a class="btn btn-danger" href="/auth/foursquare">
+                  <i class="fa fa-foursquare"></i> Connect Foursquare
+                </a>
+              {% endif %}
+            </div>
+            <!-- Github -->
+            <div class="list-group-item">
+              <h4> Github </h4>
+              {% if current_user.github.token %}
+                <div class="row">
+                  <div class="col-sm-5">
+                    <img class="social_pic" src={{current_user.github.profile.avatar_url}} />
+                  </div>
+                  <div class="col-sm-4">
+                    <p>
+                      <b> Name: </b>
+                      {{ current_user.github.profile.name }}
+                    </p>
+                    <p>
+                      <b> Login: </b>
+                      {{ current_user.github.profile.login }}
+                    </p>
+                  </div>
+                  <div class="col-sm-4">
+                    <a class="btn btn-info" href="/unlink/github">
+                      <i class="fa fa-github"></i> Unlink Github
+                    </a>
+                  </div>
+              {% else %}
+                <a class="btn btn-danger" href="/auth/github">
+                  <i class="fa fa-github"></i> Connect Github
+                </a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% if current_user.hashed_password %}
+      <div class="row">
+        <div class="col-sm-offset-2 col-sm-8">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title"> Reset Password </h3>
+            </div>
+            <div class="panel-body">
+              <form role='form' method='POST' action='/reset-password'>
+                <input type='hidden' name='_csrf' value={{_csrf}} />
+                <div class="form-group">
+                  <label for='current_password'> Current Password </label>
+                  <input class="form-control" name='current_password' />
+                </div>
+                <div class="form-group">
+                  <label for='password'> New Password </label>
+                  <input class="form-control" name='password' />
+                </div>
+                <div class="form-group">
+                  <label for='password_confirmation'> New Password Confirmation </label>
+                  <input class="form-control" name='password_confirmation' />
+                </div>
+                <div class="form-group">
+                  <button class="btn btn-default"> Reset Password </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+    
+    <div class="row text-center">
+      <a class="btn btn-danger col-sm-offset-2 col-sm-8 col-sm-12" href="/account/delete"> 
+        Delete Account
+      </a>
+    </div>
+  </div>
+{% endblock %}
+
+    

@@ -1,0 +1,52 @@
+#!/usr/bin/env node
+'use strict';
+
+/**
+ * Module dependencies
+ * @type {exports}
+ */
+var fs = require('fs-extra');
+var path = require('path');
+var chalk = require('chalk');
+var argv = require('optimist').argv;
+
+/**
+ * Current working directory
+ * @type {String}
+ */
+var cwd = process.cwd();
+
+/**
+ * Set Node environment if the user requests to set one
+ */
+if (argv.env) {
+  process.env.NODE_ENV = argv.env;
+}
+
+if (argv._[0]) {
+  switch(argv._[0]) {
+    case 'new':
+      createNew(argv._[1]);
+  }  
+}
+
+function createNew(babyCthulhu) {
+  if (babyCthulhu) {
+    var newPath = path.resolve(cwd, './'+babyCthulhu);
+    fs.copy(__dirname+'/../test', newPath, function(err) {
+      if (err) {
+        return console.error(err);
+      }
+      console.log(
+        chalk.purple("Baby Cthulhu successfully born! Her name is"),
+        chalk.green.bold(babyCthulhu)
+      );
+    });
+  } else {
+    console.log(chalk.red.bold("Must supply project name!"));
+  }
+}
+
+// var cthulhu = require('../server')();
+
+// cthulhu.start();
