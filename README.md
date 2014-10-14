@@ -1,4 +1,4 @@
-[ ![Codeship Status for theponti/cthulhu](https://www.codeship.io/projects/27531250-307f-0132-aa41-62036c69ea1f/status)](https://www.codeship.io/projects/39827)
+[ ![Codeship Status for theponti/cthulhu](https://www.codeship.io/projects/424f9660-35f3-0132-cf9e-26e565296c73/status)](https://www.codeship.io/projects/41262)
 
 Cthulhu
 ========
