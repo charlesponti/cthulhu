@@ -233,10 +233,26 @@ function Cthulhu(config) {
   };
 
   /**
+   * Helper middleware to check that req is authenticated. Continue if it is
+   * authenticated or redirect if it is not.
+   * TODO Send json response if request is to /api
+   * @param  {IncomingMessage}   req
+   * @param  {ServerResponse}   res
+   * @param  {Function} next
+   */
+  this.securePath = function(req, res, next) {
+    if (req.isAuthenticated()) {
+      next();
+    } else {
+      req.flash('error', 'You must be logged in to access this resource');
+      res.redirect('/');
+    }
+  };
+
+  /**
    * Extend this with new Express application
    */
   _.extend(this, app);
-
 
   /**
    * Start Cthulhu.
