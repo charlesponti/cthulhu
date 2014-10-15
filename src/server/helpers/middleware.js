@@ -203,7 +203,7 @@ function CthulhuMiddleware() {
     if (err) {
       return next(err);
     }
-    if (user.accessToken == access_token) {
+    if (user.accessToken == req.query.access_token) {
       req.user = user;
       return next();
     } else {
