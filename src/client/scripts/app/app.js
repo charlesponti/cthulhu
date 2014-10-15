@@ -10,6 +10,16 @@ var AppModel = Backbone.Model.extend({
 
   currentView: null,
 
+  /**
+   * Add templates module
+   * @type {exports}
+   */
+  templates: require('./templates'),
+
+  /**
+   * Add API service
+   * @type {exports}
+   */
   API: require("./service/api"),
 
   resetAppView: function(html) {
