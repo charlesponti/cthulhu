@@ -21,7 +21,7 @@ describe("Cthulhu middleware", function() {
   beforeEach(function() {
     req = HTTPFixtures.req();
     res = HTTPFixtures.res();
-    next = function() {};
+    next = sinon.spy();
   });
 
   afterEach(function() {
@@ -54,11 +54,38 @@ describe("Cthulhu middleware", function() {
 
   describe('.csrf', function() {
     it('should call csrf if req not /api', function() {
-      req.originalUrl = '/meow';
-      console.log(req);
+      req.originalUrl = '/foo';
       middleware._csrf = sinon.spy();
       middleware.csrf(req, res, next);
       expect(middleware._csrf.called).to.equal(true);
     });
-  })
+    it('should not call _csrf if req is /api', function() {
+      req.originalUrl = '/api/foo';
+      middleware._csrf = sinon.spy();
+      middleware.csrf(req, res, next);
+      expect(middleware._csrf.called).to.equal(false);
+    });
+    it('should return error if no access_token', function() {
+      req.originalUrl = '/api/foo';
+      middleware.csrf(req, res, next);
+      expect(res.status.called).to.equal(true);
+    });
+    it('should not return error if access_token', function() {
+      req.originalUrl = '/api/foo';
+      req.query.access_token = 'foobar';
+      middleware.csrf(req, res, next);
+      expect(res.status.called).to.equal(false);
+    });
+  });
+
+  describe('Events', function() {
+    describe('api-user', function() {
+      it('should call next if error', function() {
+        middleware.emitter.emit('api-user', 'foo', null, req, res, next);
+        expect(next.called).to.equal(true);
+        expect(next.args[0][0]).to.equal('foo');
+      });
+    });
+  });
+
 });
