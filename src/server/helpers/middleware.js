@@ -167,7 +167,9 @@ function CthulhuMiddleware() {
         User
           .findOne({ accessToken: access_token })
           .exec(function(err, user) {
-            if (err) return next(err);
+            if (err) {
+              return next(err);
+            }
             if (user.accessToken == access_token) {
               req.user = user;
               return next();
