@@ -10,7 +10,6 @@ var rename = require('gulp-rename');
 var browserify = require('browserify');
 var stylish = require('jshint-stylish');
 var concatinate = require('gulp-concat');
-var nodeMonitor = require('gulp-nodemon');
 var source = require('vinyl-source-stream');
 
 var sources = {
@@ -105,24 +104,6 @@ gulp.task('watch', function(done) {
   }, function() {
     gulp.start('lint-backend');
   }));
-});
-
-// Start Express server with nodemon
-gulp.task('server', function(done) {
-  var stream = nodeMonitor({
-    script: './bin/cthulhu',
-    ignore: [
-      '.idea',
-      '.git',
-      'node_modules',
-      'public',
-      'app/assets'
-    ],
-    nodeArgs: ['--debug']
-  });
-  stream.on('end', function() {
-    done();
-  });
 });
 
 gulp.task('build', [ 'styles', 'scripts' ]);
