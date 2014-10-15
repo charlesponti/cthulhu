@@ -30,7 +30,7 @@ router.get('/error', function(err, req, res) {
 });
 
 /**
- * Render home.jade
+ * Render home
  * @param  {IncomingMessage} req
  * @param  {ServerResponse} res
  */
