@@ -24,7 +24,6 @@ describe('Mailer', function() {
       mailer.sendMail('foo@foo.com', 'fooSubject', 'fooText', 'fooHTML');
       var args = mailer.transporter.sendMail.args[0];
       expect(mailer.transporter.sendMail.called).to.equal(true);
-      console.log(args);
       expect(args[0].from).to.equal('foo@foo.com');
       expect(args[0].to).to.equal('foo@foo.com');
       expect(args[0].subject).to.equal('fooSubject');
