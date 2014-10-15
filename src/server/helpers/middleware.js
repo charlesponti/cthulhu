@@ -7,6 +7,11 @@
 var _ = require('lodash');
 var chalk = require('chalk');
 var lusca = require('lusca');
+var EventEmitter = require('events').EventEmitter;
+
+/**
+ * @type {User}
+ */
 var User = require('../models/user');
 
 function CthulhuMiddleware() {
@@ -22,6 +27,11 @@ function CthulhuMiddleware() {
    * @type {Function}
    */
   self._csrf = lusca.csrf();
+
+  /**
+   * Add EventEmitter to middleware
+   */
+  self.emitter = new EventEmitter();
 
   /**
    * Server either the development version of the minified version of
@@ -155,7 +165,9 @@ function CthulhuMiddleware() {
   };
 
   /**
-   * CSRF middleware function
+   * Add conditional CSRF protection. If the request is for the api, 
+   * permissions are checked through the acess_token in req.query. If not, 
+   * the `_csrf` token is used in req.body.
    * @param  {IncomingMessage}   req
    * @param  {ServerResponse}   res
    * @param  {Function} next
@@ -167,17 +179,7 @@ function CthulhuMiddleware() {
         User
           .findOne({ accessToken: access_token })
           .exec(function(err, user) {
-            if (err) {
-              return next(err);
-            }
-            if (user.accessToken == access_token) {
-              req.user = user;
-              return next();
-            } else {
-              return res.status(401).json({
-                message: 'You must supply access_token'
-              });
-            }
+            self.emitter.emit('api-user', err, user, req, res, next);
           })
       } else {
         return res.status(401).json({
@@ -188,6 +190,28 @@ function CthulhuMiddleware() {
       self._csrf(req, res, next);
     }
   };
+
+  /**
+   * Handle database query for user with access_token supplied to /api reqest
+   * @param  {Error|null}   err
+   * @param  {User|null}   user 
+   * @param  {IncomingMessage}   req
+   * @param  {ServerResponse}   res  
+   * @param  {Function} next
+   */
+  this.emitter.on('api-user', function(err, user, req, res, next) {
+    if (err) {
+      return next(err);
+    }
+    if (user.accessToken == access_token) {
+      req.user = user;
+      return next();
+    } else {
+      return res.status(401).json({
+        message: 'You must supply access_token.'
+      });
+    }
+  });
 
 }
 
