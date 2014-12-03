@@ -3,13 +3,12 @@
 var gulp = require('gulp');
 var watch = require('gulp-watch');
 var jsHint = require('gulp-jshint');
-var rename = require('gulp-rename');
 var stylish = require('jshint-stylish');
 var concatinate = require('gulp-concat');
 
 var sources = {
   backend: [
-    './server/**/*.js'
+    './src/**/*.js'
   ]
 };
 
