@@ -35,7 +35,7 @@ var MongoStore = require('connect-mongo')(express_session);
  * @type {exports}
  */
 var mailer = require('./mailer');
-var middleware = require('./util/middleware');
+var middleware = require('./middleware');
 
 var hour = 3600000;
 var day = hour * 24;
