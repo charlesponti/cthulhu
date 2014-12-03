@@ -42,22 +42,12 @@ var day = hour * 24;
 var week = day * 7;
 
 /**
- * `Cthulhu` constructor
- * @param {Object} config Initial configuration of application
- * @constructor
- *
- * EXAMPLE USAGE:
- * ```js
- *  var app = require('cthulhu')({
- *    port: 4000,
- *    static: '../public',
- *    views: '../app/views',
- *    sessionSecret: 'meerkatmanorrox',
- *    appName: 'Cthulhu Grand'
- *  });
+ * Application constructor
+ * @param {object} config Initial configuration of application
+ * @return {object} application
  * ```
  */
- module.exports = function(config) {
+module.exports = function(config) {
 
   var app = express();
 
