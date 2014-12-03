@@ -20,7 +20,6 @@ var lusca = require('lusca');
 var io = require('socket.io');
 var morgan = require('morgan');
 var express = require('express');
-var mongoose = require('mongoose');
 var flash = require('express-flash');
 var compress = require('compression');
 var bodyParser = require('body-parser');
@@ -66,13 +65,6 @@ function Cthulhu(config) {
    * Store config
    */
   app._config = config;
-
-  /**
-   * Set sentinal
-   * @type {[type]}
-   */
-  this.sentinal =
-  app.sentinal = sentinal(config.OAuth);
 
   /**
    * Set port. First check configuration or use 3000 as a fallback.
