@@ -9,16 +9,10 @@ A NodeJS, ExpressJS, BackboneJS, MongoDB, & Browserify boilerplate application
 
 ## Installation
 
-1. Install NPM dependencies 
+1. Install NPM dependencies
 
   ```
     npm install
-  ```
-
-2. Install Bower dependencies
-
-  ```
-    bower install
   ```
 
 3. Edit `.json` files in `server/config/environments` and remove `.example` from names
@@ -44,15 +38,15 @@ PayPal than it's secure enough for me.
 
 ### Templating: Swig  
 
-I chose Swig because it provides a comfortable developer environment for 
+I chose Swig because it provides a comfortable developer environment for
 non-developers who are used to working with vanilla HTML and developers who are
 coming from other templating frameworks in other languages.
 
 ## Sentinal
 
-Sentinal is an middleware utility library that I've written. It was build to 
-help not having to rewrite the same code over and over again to perform basic 
-actions such as authenticating users by way of OAuth, adding CORS headers, and 
+Sentinal is an middleware utility library that I've written. It was build to
+help not having to rewrite the same code over and over again to perform basic
+actions such as authenticating users by way of OAuth, adding CORS headers, and
 so on.
 
 ### CORS
@@ -69,7 +63,7 @@ so on.
   }));
 ```
 
-`Sentinal.remember` is used to remember original destination before login. It 
+`Sentinal.remember` is used to remember original destination before login. It
 requires an Object with a key `passRoutes` that is set to an array of strings.
 The strings specified will be ignored. The original destination will be saved
 to `req.session.returnTo`.
