@@ -17,9 +17,7 @@ An Express Server with all the fixings.
 
 ## Features
 
-### Database: MongoDB w/ Mongoose
-I chose to use MongoDB for the database because it's the most common NoSQL DB
-and the easiest to use when bootstrapping a new project.
+### Socket.io
 
 ### Security: Lusca
 
