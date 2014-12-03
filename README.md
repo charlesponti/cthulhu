@@ -5,15 +5,26 @@ An Express Server with all the fixings.
 
 ========
 
-## Installation
+## USAGE
 
-1. Install NPM dependencies
+1. Install
 
   ```
-    npm install cthulhu
+    npm install cthulhu --save
   ```
 
-2. Edit `.json` files in `server/config/environments` and remove `.example` from names
+2. Use
+
+```js
+  var app = require('cthulhu')({
+    port: 4000,
+    static: '../public',
+    views: '../app/views',
+    sessionSecret: 'meerkatmanorrox',
+    sessionStore: 'myapp-sessions',
+    appName: 'My Super Awesome App Name'
+  });
+```
 
 ## Features
 
