@@ -69,7 +69,7 @@ var week = day * 7;
   /**
    * Set port. First check configuration or use 3000 as a fallback.
    */
-  app.set('port', config.port || 4000);
+  app.set('port', config.port);
 
   /**
    * Set mailer
@@ -105,10 +105,23 @@ var week = day * 7;
 
   app.use(compress());
   app.use(morgan('dev'));
+
+  /**
+   * Add body-parser
+   */
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
+
+  /**
+   * Add express-validator
+   */
   app.use(express_validator());
+
   app.use(methodOverride());
+
+  /**
+   * Add cookie-parser
+   */
   app.use(cookieParser());
 
   /**
