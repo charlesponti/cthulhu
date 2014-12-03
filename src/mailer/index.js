@@ -7,11 +7,6 @@ var _ = require('lodash');
 var nodemailer = require('nodemailer');
 
 /**
- * Application dependencies
- * @type {exports}
- */
-
-/**
  * `Mailer` constructor
  * @constructor
  */
@@ -77,8 +72,6 @@ function Mailer(options) {
     }, this.sendMailCallback);
   };
 
-  this.emails = require('./emails')({ mailer: this });
-  
 }
 
 /**
@@ -86,6 +79,6 @@ function Mailer(options) {
  * @param  {Object} config
  * @return {Mailer}
  */
-module.exports = function(config) { 
-  return new Mailer(config); 
+module.exports = function(config) {
+  return new Mailer(config);
 };
