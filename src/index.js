@@ -12,10 +12,10 @@ var env = process.env.NODE_ENV;
  * @type {exports}
  */
 var _ = require('lodash');
+var util = require('util');
 var http = require('http');
 var swig = require('swig');
 var path = require('path');
-var chalk = require('chalk');
 var lusca = require('lusca');
 var io = require('socket.io');
 var morgan = require('morgan');
@@ -36,8 +36,6 @@ var MongoStore = require('connect-mongo')(express_session);
  * @type {exports}
  */
 var mailer = require('./mailer');
-var User = require('./models/user');
-var sentinal = require('./sentinal');
 var middleware = require('./helpers/middleware');
 
 var hour = 3600000;
@@ -48,7 +46,7 @@ var week = day * 7;
  * `Cthulhu` constructor
  * @param {Object} config Initial configuration of application
  * @constructor
- * 
+ *
  * EXAMPLE USAGE:
  * ```js
  *  var app = require('cthulhu')({
@@ -84,7 +82,7 @@ function Cthulhu(config) {
   /**
    * Set mailer
    */
-  this.mailer = 
+  this.mailer =
   app.mailer = mailer(config.Mailer);
 
   /**
@@ -101,7 +99,7 @@ function Cthulhu(config) {
    * Set directory where views are stored.
    */
   app.set('views', path.join(__dirname, config.views || './views'));
-  
+
   /**
    * Set view engine
    */
@@ -113,7 +111,7 @@ function Cthulhu(config) {
    */
   app.set('view cache', false);
   swig.setDefaults({ cache: false });
-  
+
   app.use(compress());
   app.use(morgan('dev'));
   app.use(bodyParser.json());
@@ -157,17 +155,6 @@ function Cthulhu(config) {
   app.use(flash());
 
   /**
-   * Serve either dev or min version of javascript depending on
-   * environment.
-   */
-  app.use(middleware.browserify);
-
-  /**
-   * Set up Sentinal
-   */
-  app.use(app.sentinal.initialize(config.oauth));
-
-  /**
    * Set up Sentianl CORS headers
    */
   app.use(middleware.cors);
@@ -195,46 +182,12 @@ function Cthulhu(config) {
    */
   app.use(middleware.csrf);
 
-  app.use(app.sentinal.auth.deserializeUser(function(id, done) {
-    User.findOne({ _id: id }).exec(function(err, user) {
-      /**
-       * If err, pass new Error
-       */
-      if (err) {
-        return done(err);
-      }
-
-      /**
-       * If no user exists, pass new Error with message
-       */
-      if (!user) {
-        return done(new Error("Invalid id."));
-      }
-
-      return done(null, user);
-    });
-  }));
-
   /**
    * Set local variables for use in views
    */
   app.use(middleware.locals({
     appName: config.appName
   }));
-
-  /**
-   * Connect to database
-   */
-  app.startDB = function() {
-    var db = config.DB;
-    mongoose.connect(db, function(err) {
-      if (err) {
-        return console.log(err);
-      } 
-      app.db = mongoose.connection;
-      console.log('Connected to '+chalk.red.bold(db)+' database.');
-    });
-  };
 
   /**
    * Helper middleware to check that req is authenticated. Continue if it is
@@ -288,10 +241,7 @@ function Cthulhu(config) {
      * Start application server.
      */
     server.listen(app.get('port'), function() {
-      console.log(chalk.blue.bold('Cthulhu'), 
-        'has risen at port ' + chalk.blue.bold(app.get('port')) + ' in',
-        chalk.red.bold(app.get('env'))
-      );
+      console.log('Cthulhu has risen at port', app.get('port'), 'in', app.get('env'), 'mode');
     });
   };
 
@@ -310,7 +260,7 @@ module.exports = function() {
   var config = require('./config');
 
   /**
-   * Check if there is a current instance of Cthulhu. If so, return that 
+   * Check if there is a current instance of Cthulhu. If so, return that
    * instance. If not, create new Cthulhu, attach to GLOBAL, and return it..
    */
   if (!Cthulhu._instance) {
