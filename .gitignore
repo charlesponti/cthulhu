@@ -8,8 +8,8 @@ staging.json
 
 node_modules
 
-src/public/vendor
-src/public/scripts
-src/public/styles
+public/vendor
+public/scripts
+public/styles
 
 npm-debug.log

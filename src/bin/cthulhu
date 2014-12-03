@@ -1,6 +1,0 @@
-#!/usr/bin/env node
-'use strict';
-
-var cthulhu = require('../server')();
-
-cthulhu.start();
