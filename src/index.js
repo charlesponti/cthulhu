@@ -35,7 +35,7 @@ var MongoStore = require('connect-mongo')(express_session);
  * @type {exports}
  */
 var mailer = require('./mailer');
-var middleware = require('./helpers/middleware');
+var middleware = require('./util/middleware');
 
 var hour = 3600000;
 var day = hour * 24;
@@ -57,7 +57,7 @@ var week = day * 7;
  *  });
  * ```
  */
-function Cthulhu(config) {
+ module.exports = function(config) {
 
   var app = express();
 
@@ -74,8 +74,7 @@ function Cthulhu(config) {
   /**
    * Set mailer
    */
-  this.mailer =
-  app.mailer = mailer(config.Mailer);
+  app.mailer = mailer(config.mailer);
 
   /**
    * Set folder for static files (javascript and css)
@@ -90,7 +89,7 @@ function Cthulhu(config) {
   /**
    * Set directory where views are stored.
    */
-  app.set('views', path.join(__dirname, config.views || './views'));
+  app.set('views', path.join(__dirname, config.views));
 
   /**
    * Set view engine
@@ -128,11 +127,6 @@ function Cthulhu(config) {
       db: config.sessionStore
     })
   }));
-
-  /**
-   * Set command line logging
-   */
-  app.use(middleware.logger);
 
   /**
    * Remember original destination before login.
@@ -188,7 +182,7 @@ function Cthulhu(config) {
    * @param  {ServerResponse}   res
    * @param  {Function} next
    */
-  this.securePath = function(req, res, next) {
+  app.securePath = function(req, res, next) {
     var message = 'You must be logged in to access this resource';
     if (req.isAuthenticated()) {
       next();
@@ -203,24 +197,14 @@ function Cthulhu(config) {
   };
 
   /**
-   * Extend this with new Express application
-   */
-  _.extend(this, app);
-
-  /**
    * Start Cthulhu.
    */
-  this.start = function() {
+  app.start = function() {
     /**
      * Add socket to app and begin listening on port.
      */
     var server = http.createServer(app);
     app.socket = io.listen(server).sockets;
-
-    /**
-     * Connect to database
-     */
-    app.startDB();
 
     /**
      * Emit initial message
@@ -237,34 +221,6 @@ function Cthulhu(config) {
     });
   };
 
-}
+  return app;
 
-/**
- * Export factory that returns new Cthulhu
- * @param  {Object} config
- * @return {Cthulhu}
- */
-module.exports = function() {
-  /**
-   * Get application configuration
-   * @type {Object}
-   */
-  var config = require('./config');
-
-  /**
-   * Check if there is a current instance of Cthulhu. If so, return that
-   * instance. If not, create new Cthulhu, attach to GLOBAL, and return it..
-   */
-  if (!Cthulhu._instance) {
-    GLOBAL.Cthulhu =
-    Cthulhu._instance = new Cthulhu(config);
-
-    /**
-     * Setup Cthulhu routes
-     */
-    var router = require('./routes');
-    Cthulhu._instance.use(router());
-  }
-
-  return Cthulhu._instance;
 };
