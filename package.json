@@ -1,13 +1,11 @@
 {
   "name": "cthulhu",
-  "version": "1.1.0",
+  "version": "1.0.0",
   "private": false,
-  "main": "bin/cthulhu",
+  "main": "src/index.js",
   "repository": "http://github.com/theponti/cthulhu",
   "scripts": {
     "test": "NODE_ENV=test mocha --recursive test",
-    "start": "node bin/cthulhu",
-    "supervise": "supervisor bin/cthulhu"
   },
   "dependencies": {
     "body-parser": "*",
@@ -24,7 +22,8 @@
     "method-override": "*",
     "morgan": "*",
     "nodemailer": "^1.2.1",
-    "socket.io": "^1.1.0"
+    "socket.io": "^1.1.0",
+    "swig": "^1.4.2"
   },
   "devDependencies": {
     "chai": "^1.9.1",
