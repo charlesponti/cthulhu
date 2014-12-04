@@ -7,7 +7,7 @@
   "description": "An Express server with all the fixings",
   "repository": "http://github.com/theponti/cthulhu",
   "scripts": {
-    "test": ""
+    "test": "jasmine-node . --autotest"
   },
   "dependencies": {
     "body-parser": "*",
