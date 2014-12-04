@@ -74,10 +74,25 @@ Cthulhu is just the server portion, packed with all the stuff that I wish, and I
 
 8. **Logging** (`winston`)
   ```js
-    var app = require('cthulhu')({
-      // ...
-      logFile: './logs/some-logs.log'
-      // ...
+    app.addLogger('./logs/some-logs.log');
+    // NOTE: The directory './logs' must exist in order for the 'some-logs.log' file to be created.
+  ```
+  You can add a winston logger through the `app.addLogger` API. As its first argument it takes a `String` which is the path to the file you want to log to. You can also pass a config object as the second parameter like so:
+  ```js
+    app.addLogger('./logs/special.log', {
+      file: {
+        level: 'info',
+        handleExceptions: true,
+        json: true,
+        maxsize: 5242880, // 5MB
+        maxFiles: 5,
+        colorize: false
+      },
+      console: {
+        level: 'debug',
+        handleExceptions: true,
+        json: false,
+        colorize: true
+      }
     });
   ```
-  If you supply the cthulhu config with a logFile value, logs will be saved to that file.
