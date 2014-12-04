@@ -1,3 +1,5 @@
+[ ![Codeship Status for theponti/cthulhu](https://codeship.com/projects/424f9660-35f3-0132-cf9e-26e565296c73/status?branch=master)](https://codeship.com/projects/41262)
+
 #### An Express Server with all the fixings.
 
 ![cthulhu](http://img3.wikia.nocookie.net/__cb20120509185304/powerlisting/images/9/90/Great-cthulhu.jpg)
