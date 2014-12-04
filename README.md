@@ -51,15 +51,13 @@ Cthulhu is just the server portion, packed with all the stuff that I wish, and I
   app.start();
   ```
 
-This command will start server, along with starting Socket.io.
-
 ## Features
 
-1. **Socket.io**  
+1. **Socket.io**
   What application these days doesn't need to be real-time?
 
-2. **Security:** Lusca  
+2. **Security:** Lusca
   I chose to use the Lusca module for security because if it's secure enough for PayPal than it's secure enough for me.
 
-3. **Templating:** Swig  
+3. **Templating:** Swig
   I chose Swig because it provides a comfortable development environment for front-end developers that work mostly with HTML.
