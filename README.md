@@ -16,40 +16,40 @@ Cthulhu is just the server portion, packed with all the stuff that I wish, and I
 
 1. **Install**
 
-```
-  npm install cthulhu --save
-```
+  ```
+    npm install cthulhu --save
+  ```
 
 2. **Configure**
 
-```js
-  var app = require('cthulhu')({
-    port: 4000,
-    static: '../public',
-    views: '../app/views',
-    sessionSecret: 'meerkatmanorrox',
-    sessionStore: 'myapp-sessions',
-    appName: 'My Super Awesome App Name'
-  });
-```
+  ```js
+    var app = require('cthulhu')({
+      port: 4000,
+      static: '../public',
+      views: '../app/views',
+      sessionSecret: 'meerkatmanorrox',
+      sessionStore: 'myapp-sessions',
+      appName: 'My Super Awesome App Name'
+    });
+  ```
 
 3. **Add Some Routes**
 
-```js
-var router = app.Router();
+  ```js
+  var router = app.Router();
 
-router.get('*', function(req, res, next) {
-  res.render('index');
-});
+  router.get('*', function(req, res, next) {
+    res.render('index');
+  });
 
-app.use(router)
-```
+  app.use(router)
+  ```
 
 4. **Start Her Up**
 
-```js
-app.start();
-```
+  ```js
+  app.start();
+  ```
 
 This command will start server, along with starting Socket.io.
 

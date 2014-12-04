@@ -1,6 +1,6 @@
 {
   "name": "cthulhu",
-  "version": "1.0.7-p2",
+  "version": "1.0.7-p3",
   "private": false,
   "main": "src/index.js",
   "author": "CJ Ponti <@cjponti>",
