@@ -1,6 +1,6 @@
 {
   "name": "cthulhu",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "private": false,
   "main": "src/index.js",
   "repository": "http://github.com/theponti/cthulhu",

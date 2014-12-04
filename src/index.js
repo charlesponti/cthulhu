@@ -80,7 +80,7 @@ module.exports = function(config) {
    */
   app.use(
     express.static(
-      path.join(__dirname, config.static),
+      path.resolve(process.cwd(), config.static),
       { maxAge: week } // TTL (Time To Live) for static files
     )
   );
@@ -88,7 +88,7 @@ module.exports = function(config) {
   /**
    * Set directory where views are stored.
    */
-  app.set('views', path.join(__dirname, config.views));
+  app.set('views', path.resolve(process.cwd(), config.views));
 
   /**
    * Set view engine
