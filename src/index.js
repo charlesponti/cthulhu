@@ -61,10 +61,12 @@ module.exports = function(config) {
    */
   app.set('port', config.port);
 
-  /**
-   * Set mailer
-   */
-  app.mailer = mailer(config.mailer);
+  if (config.mailer) {
+    /**
+     * Set mailer
+     */
+    app.mailer = mailer(config.mailer);
+  }
 
   /**
    * Set folder for static files (javascript and css)
