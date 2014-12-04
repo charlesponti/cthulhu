@@ -8,12 +8,12 @@ describe('Cthulhu', function() {
   var app;
 
   beforeEach(function() {
+    spyOn(fs, 'writeFileSync');
     app = cthulhu({
       public: './',
       views: './',
       logFile: './logs/test.log'
     });
-    spyOn(fs, 'writeFileSync');
   });
 
   afterEach(function() {
