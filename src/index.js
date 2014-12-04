@@ -69,6 +69,13 @@ module.exports = function(config) {
   }
 
   /**
+   * Add express.Router to app in order for user's of cthulhu to create
+   * routers without needed a dependency on express.
+   * @type {express.Router}
+   */
+  app.Router = express.Router;
+
+  /**
    * Set folder for static files (javascript and css)
    */
   app.use(
