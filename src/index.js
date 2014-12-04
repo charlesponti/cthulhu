@@ -8,6 +8,14 @@
 var env = process.env.NODE_ENV;
 
 /**
+ * Current working directory from which cthulhu is
+ * being used.
+ * @type {String}
+ * @private
+ */
+var cwd = process.cwd();
+
+/**
  * Module dependencies.
  * @type {exports}
  */
@@ -35,6 +43,7 @@ var MongoStore = require('connect-mongo')(express_session);
  * @type {exports}
  */
 var mailer = require('./mailer');
+var logger = require('./logger');
 var middleware = require('./middleware');
 
 var hour = 3600000;
@@ -61,11 +70,24 @@ module.exports = function(config) {
    */
   app.set('port', config.port);
 
+  /**
+   * Allow for the use of HTTP verbs such as PUT or DELETE in places
+   * where the client doesn't support it.
+   */
+  app.use(methodOverride());
+
+  /**
+   * If config.mailer, add `nodemailer` to app
+   */
   if (config.mailer) {
-    /**
-     * Set mailer
-     */
     app.mailer = mailer(config.mailer);
+  }
+
+  /**
+   * If config.logFile, add `winston` logger to app
+   */
+  if (config.logFile) {
+    app.logger = logger(config.logFile);
   }
 
   /**
@@ -80,7 +102,7 @@ module.exports = function(config) {
    */
   app.use(
     express.static(
-      path.resolve(process.cwd(), config.static),
+      path.resolve(cwd, config.static),
       { maxAge: week } // TTL (Time To Live) for static files
     )
   );
@@ -88,7 +110,7 @@ module.exports = function(config) {
   /**
    * Set directory where views are stored.
    */
-  app.set('views', path.resolve(process.cwd(), config.views));
+  app.set('views', path.resolve(cwd, config.views));
 
   /**
    * Set view engine
@@ -102,21 +124,30 @@ module.exports = function(config) {
   app.set('view cache', false);
   swig.setDefaults({ cache: false });
 
+  /**
+   * Add `compression`
+   * This module compresses responses.
+   */
   app.use(compress());
+
+  /**
+   * Add `morgan`
+   * This module is used for logging HTTP requests.
+   */
   app.use(morgan('dev'));
 
   /**
-   * Add body-parser
+   * Add `body-parser`
    */
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
 
   /**
-   * Add express-validator
+   * Add `express-validator`
+   * This module allows values in req.body to be validated
+   * with the use of helper methods.
    */
   app.use(express_validator());
-
-  app.use(methodOverride());
 
   /**
    * Add cookie-parser

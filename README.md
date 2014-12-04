@@ -53,11 +53,29 @@ Cthulhu is just the server portion, packed with all the stuff that I wish, and I
 
 ## Features
 
-1. **Socket.io**
+1. **Request body parsing** (`body-parser`)
+
+2. **Resource Compression** (`compression`)
+
+3. **Cookie Parser** (`cookie-parser`)
+
+4. **Sessions** (`express-session` and `connect-mongo`)
+
+5. **WebSockets** (`socket.io`)  
   What application these days doesn't need to be real-time?
 
-2. **Security:** Lusca
+6. **Security** (`lusca`)  
   I chose to use the Lusca module for security because if it's secure enough for PayPal than it's secure enough for me.
 
-3. **Templating:** Swig
+7. **Templating** (`swig`)  
   I chose Swig because it provides a comfortable development environment for front-end developers that work mostly with HTML.
+
+8. **Logging** (`winston`)
+  ```js
+    var app = require('cthulhu')({
+      // ...
+      logFile: './logs/some-logs.log'
+      // ...
+    });
+  ```
+  If you supply the cthulhu config with a logFile value, logs will be saved to that file.

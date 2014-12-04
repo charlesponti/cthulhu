@@ -1,6 +1,6 @@
 {
   "name": "cthulhu",
-  "version": "1.0.7-p4",
+  "version": "1.0.8",
   "private": false,
   "main": "src/index.js",
   "author": "CJ Ponti <@cjponti>",
@@ -25,7 +25,8 @@
     "morgan": "*",
     "nodemailer": "^1.2.1",
     "socket.io": "^1.1.0",
-    "swig": "^1.4.2"
+    "swig": "^1.4.2",
+    "winston": "^0.8.3"
   },
   "devDependencies": {
     "chai": "^1.9.1",
