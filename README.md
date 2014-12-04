@@ -27,8 +27,8 @@ Cthulhu is just the server portion, packed with all the stuff that I wish, and I
   ```js
     var app = require('cthulhu')({
       port: 4000,
-      static: '../public',
-      views: '../app/views',
+      public: './public',
+      views: './views',
       sessionSecret: 'meerkatmanorrox',
       sessionStore: 'myapp-sessions',
       appName: 'My Super Awesome App Name'

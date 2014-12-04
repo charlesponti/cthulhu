@@ -54,7 +54,6 @@ var week = day * 7;
  * Application constructor
  * @param {object} config Initial configuration of application
  * @return {object} application
- * ```
  */
 module.exports = function(config) {
 
@@ -113,17 +112,21 @@ module.exports = function(config) {
   /**
    * Set folder for static files (javascript and css)
    */
-  app.use(
-    express.static(
-      path.resolve(cwd, config.static),
-      { maxAge: week } // TTL (Time To Live) for static files
-    )
-  );
+  if (config.public) {
+    app.use(
+      express.static(
+        path.resolve(cwd, config.public),
+        { maxAge: week } // TTL (Time To Live) for static files
+      )
+    );
+  }
 
   /**
    * Set directory where views are stored.
    */
-  app.set('views', path.resolve(cwd, config.views));
+  if (config.views) {
+    app.set('views', path.resolve(cwd, config.views));
+  }
 
   /**
    * Set view engine
@@ -175,14 +178,16 @@ module.exports = function(config) {
   /**
    * Create session store
    */
-  app.use(express_session({
-    resave: true,
-    saveUninitialized: true,
-    secret: config.sessionSecret,
-    store: new MongoStore({
-      db: config.sessionStore
-    })
-  }));
+  if (config.sessionSecret && config.sessionStore) {
+    app.use(express_session({
+      resave: true,
+      saveUninitialized: true,
+      secret: config.sessionSecret,
+      store: new MongoStore({
+        db: config.sessionStore
+      })
+    }));
+  }
 
   /**
    * Remember original destination before login.
