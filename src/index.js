@@ -84,6 +84,19 @@ module.exports = function(config) {
   }
 
   /**
+   * Add function for creating new winston logs
+   * @param {string} loggerName Name of logger
+   * @param {string} logFile Path to log file
+   * @param {object} config Logger configuration
+   * @type {Function}
+   */
+  app.addLogger = function(loggerName, logfile, config) {
+    app.loggers = app.loggers || {};
+    app.loggers[loggerName] = logger(logfile, config);
+  };
+
+
+  /**
    * If config.logFile, add `winston` logger to app
    */
   if (config.logFile) {
