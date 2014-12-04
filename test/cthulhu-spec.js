@@ -1,5 +1,6 @@
 'use strict';
 
+var fs = require('fs');
 var cthulhu = require('../src');
 
 describe('Cthulhu', function() {
@@ -12,6 +13,7 @@ describe('Cthulhu', function() {
       views: './',
       logFile: './logs/test.log'
     });
+    spyOn(fs, 'writeFileSync');
   });
 
   afterEach(function() {
