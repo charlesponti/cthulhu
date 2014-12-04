@@ -18,8 +18,11 @@ describe('Cthulhu', function() {
   });
 
   describe('.addLogger()', function() {
-    it('should exist', function() {
-      expect(app.addLogger).not.toEqual(undefined);
+    it('add a logger', function() {
+      app.addLogger('foo', './logs/bar.log');
+      expect(app.loggers.foo).not.toEqual(undefined);
+      expect(app.loggers.foo.info).not.toEqual(undefined);
+      expect(app.loggers.foo.warn).not.toEqual(undefined);
     });
   });
 
