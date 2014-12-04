@@ -161,6 +161,7 @@ module.exports = function(config) {
    * Enable Lusca security
    */
   app.use(lusca({
+    csrf: true,
     csp: {
       default_src: "'self'",
       script_src:  "'self'",
@@ -174,11 +175,6 @@ module.exports = function(config) {
     },
     xssProtection: true
   }));
-
-  /**
-   * Add CSRF (Cross-Site Request Forgery) protection
-   */
-  app.use(middleware.csrf);
 
   /**
    * Set local variables for use in views

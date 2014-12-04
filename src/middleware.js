@@ -42,32 +42,6 @@ exports.remember = function(config) {
 };
 
 /**
-* Add conditional CSRF protection. If the request is for the api,
-* permissions are checked through the acess_token in req.query. If not,
-* the `_csrf` token is used in req.body.
-* @param  {IncomingMessage}   req
-* @param  {ServerResponse}   res
-* @param  {Function} next
-*/
-exports.csrf = function(req, res, next) {
-  var access_token = req.query.access_token;
-  if (/api/.test(req.originalUrl)) {
-    if (access_token) {
-      // TODO allow for getting user based on access token
-      // User
-      // .findOne({ accessToken: access_token })
-      // .exec(function(err, user) {
-      //   self.emitter.emit('api-user', err, user, req, res, next);
-      // })
-      return;
-    }
-    return;
-  } else {
-    lusca.csrf(req, res, next);
-  }
-};
-
-/**
 * Attach local variables to ServerResponse
 * @return {Function}
 */
