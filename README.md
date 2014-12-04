@@ -3,15 +3,15 @@
 
 An Express Server with all the fixings.
 
-========
+===
 
 ## USAGE
 
 1. Install
 
-  ```
-    npm install cthulhu --save
-  ```
+```
+  npm install cthulhu --save
+```
 
 2. Use
 
@@ -35,7 +35,7 @@ An Express Server with all the fixings.
 I chose to use the Lusca module for security because if it's secure enough for
 PayPal than it's secure enough for me.
 
-### Templating: Swig  
+### Templating: Swig
 
 I chose Swig because it provides a comfortable developer environment for
 non-developers who are used to working with vanilla HTML and developers who are
