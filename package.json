@@ -1,8 +1,10 @@
 {
   "name": "cthulhu",
-  "version": "1.0.7",
+  "version": "1.0.7-p1",
   "private": false,
   "main": "src/index.js",
+  "author": "CJ Ponti <@cjponti>",
+  "description": "An Express server with all the fixings",
   "repository": "http://github.com/theponti/cthulhu",
   "scripts": {
     "test": "NODE_ENV=test mocha --recursive test"
