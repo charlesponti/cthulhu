@@ -6,9 +6,9 @@
 
 This project started about a year ago when I was looking for a great boilerplate setup for a NodeJS application. I was coming from the Rails community and was hoping that someone would have created something like Rails in NodeJS.
 
-I started building a whole slew of NodeJS applications and kept a boilerplate project on the side where I would store all of the best practices I had learned. That boilerplate become pretty large, monolithic, and opinionated, which were all of the things that I had hated about working with a run-of-the-mill Rails application. (Yes, I know there are ways of modularized Rails apps, but let's be honest with ourselves: Most Rails apps, even those written by companies, are big, monolithic nightmares.)
+I started building a whole slew of NodeJS applications and kept a boilerplate project on the side where I would store all of the best practices I had learned. That boilerplate became pretty large, monolithic, and opinionated, which were all of the things that I had hated about working with a run-of-the-mill Rails application. (Yes, I know there are ways of modularised Rails apps, but let's be honest with ourselves: most Rails apps, even those written by companies, are big, monolithic nightmares.)
 
-So, after taking studying true software modularity from UNIX, computer science research papers, and the NodeJS community, I have decided to ditch the whole boilerplate idea and instead break up all the best practices I have learned into independent modules. The point of these modules are to capture everything I learn on my journey as a software developer.
+So, after studying software modularity from UNIX, computer science research papers, and the NodeJS community, I have decided to ditch the whole boilerplate idea and instead break up all the best practices I have learned into independent modules. The point of these modules are to capture everything I learn on my journey as a software developer.
 
 Cthulhu is just the server portion, packed with all the stuff that I wish, and I'm sure many other people wished as well, had come with the Express server.
 
