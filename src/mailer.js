@@ -10,37 +10,36 @@ var nodemailer = require('nodemailer');
  * `Mailer` constructor
  * @constructor
  */
-function Mailer(options) {
+ module.exports = function(config) {
 
-  var self = this;
+  var mailer = {};
 
   var requiredFields = [
     'service',
-    'service_username',
-    'service_password',
-    'from_email'
+    'username',
+    'password'
   ];
 
   /**
    * Check for necessary configurations
    */
   _.each(requiredFields, function(field) {
-    if (!options[field]) {
+    if (!config[field]) {
       throw new Error('Must supply Mailer with '+field);
     }
   });
 
-  this.email = options.from_email;
+  mailer.email = config.from;
 
-  this.transport = {
-    service: options.service,
+  mailer.transport = {
+    service: config.service,
     auth: {
-      user: options.service_username,
-      pass: options.service_password
+      user: config.username,
+      pass: config.password
     }
   };
 
-  this.transporter = nodemailer.createTransport(this.transport);
+  mailer.transporter = nodemailer.createTransport(mailer.transport);
 
   /**
    * Callback to be executed if error occurs
@@ -48,7 +47,7 @@ function Mailer(options) {
    * @param {Object} info
    * @returns {*}
    */
-  this.sendMailCallback = function (error, info) {
+   mailer.sendMailCallback = function (error, info) {
     if (error) {
       return console.log(error);
     }
@@ -57,28 +56,21 @@ function Mailer(options) {
 
   /**
    * Send mail with defined transport object
-   * @param {Array} email List of receivers
+   * @param {Array} to List of receivers
    * @param {String} subject Subject line
    * @param {String} text Plain text body
    * @param {String} html HTML body
    */
-  this.sendMail = function(email, subject, text, html) {
-    this.transporter.sendMail({
-      from: this.transport.auth.user,
-      to: email,
-      subject: subject,
-      text: text,
-      html: html
+   mailer.sendMail = function(options) {
+     mailer.transporter.sendMail({
+      from: options.from,
+      to: options.to,
+      subject: options.subject,
+      text: options.text,
+      html: options.html
     }, this.sendMailCallback);
   };
 
-}
+  return mailer;
 
-/**
- * Export factory function that returns new Mailer
- * @param  {Object} config
- * @return {Mailer}
- */
-module.exports = function(config) {
-  return new Mailer(config);
 };

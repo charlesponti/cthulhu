@@ -136,3 +136,29 @@ Cthulhu is just the server portion, packed with all the stuff that I wish, and I
     });
   ```
   Cthulhu remembers all previous routes the user was on and stores it in `req.session.returnTo`. If you would like certain routes to not get saved, specify them in the passRoutes in an Array.
+
+10. **Email**
+  ```js
+    var app = require('cthulhu')({
+      // ...
+      mailer: {
+        service: 'gmail',
+        username: 'foo@gmail.com',
+        password: 'foobarbaz'
+      }
+      // ...
+    });
+  ```
+
+  Providing a mailer configuration will allow you to send emails, using nodemailer.
+
+  **Sending Email**
+  ```js
+    app.mailer.sendMail({
+      from: 'foo@gmail.com',
+      to: 'bar@gmail.com',
+      subject: 'Hello World',
+      text: 'Hello World',
+      html: '<h1>Hello World</h1>'
+    });
+  ```
