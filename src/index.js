@@ -150,7 +150,19 @@ module.exports = function(config) {
    * Add `morgan`
    * This module is used for logging HTTP requests.
    */
-  cthulhu.use(morgan('dev'));
+   var morganConfig = config.morgan || 'dev';
+
+   if (cthulhu.logger) {
+    cthulhu.use(morgan(morganConfig, {
+      stream: {
+        write: function(message, encoding) {
+          cthulhu.logger.info(message);
+        }
+      }
+    }));
+  } else {
+    cthulhu.use(morgan(morganConfig));
+  }
 
   /**
    * Add `body-parser`
