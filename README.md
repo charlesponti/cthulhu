@@ -150,7 +150,7 @@ Cthulhu is just the server portion, packed with all the stuff that I wish, and I
     });
   ```
 
-  Providing a mailer configuration will allow you to send emails, using nodemailer.
+  Providing a mailer configuration will allow you to send emails, using nodemailer, through `app.mailer`. If you don't provide a mailer configuration, `app.mailer` will simply not be available.
 
   **Sending Email**
   ```js
