@@ -31,7 +31,8 @@ Cthulhu is just the server portion, packed with all the stuff that I wish, and I
       views: './views',
       sessionSecret: 'meerkatmanorrox',
       sessionStore: 'myapp-sessions',
-      appName: 'My Super Awesome App Name'
+      appName: 'My Super Awesome App Name',
+      passRoutes: ['api', 'auth']
     });
   ```
 
@@ -63,23 +64,25 @@ Cthulhu is just the server portion, packed with all the stuff that I wish, and I
 
 4. **Sessions** (`express-session` and `connect-mongo`)
 
-5. **WebSockets** (`socket.io`)  
-  What application these days doesn't need to be real-time?
+5. **WebSockets** (`socket.io`)
 
 6. **Security** (`lusca`)  
   I chose to use the Lusca module for security because if it's secure enough for PayPal than it's secure enough for me.
 
 7. **Templating** (`swig`)  
-  I chose Swig because it provides a comfortable development environment for front-end developers that work mostly with HTML.
+  Swig is used by default, but you can change this to whichever templating engine you prefer by specifying configuring Cthulhu in the same way you would an express application.
 
 8. **Logging** (`winston`)
   ```js
-    app.addLogger('./logs/some-logs.log');
-    // NOTE: The directory './logs' must exist in order for the 'some-logs.log' file to be created.
+    app.addLogger('someLogger', './logs/some-logs.log');
+    // NOTE: The directory './logs' must exist in order
+    // for the 'some-logs.log' file to be created.
+
+    app.loggers.someLogger.info('Meow Mix!');
   ```
   You can add a winston logger through the `app.addLogger` API. As its first argument it takes a `String` which is the path to the file you want to log to. You can also pass a config object as the second parameter like so:
   ```js
-    app.addLogger('./logs/special.log', {
+    app.addLogger('special', './logs/special.log', {
       file: {
         level: 'info',
         handleExceptions: true,
@@ -95,4 +98,16 @@ Cthulhu is just the server portion, packed with all the stuff that I wish, and I
         colorize: true
       }
     });
+
+    app.loggers.special.warn('Danger, Will Robinson!');
   ```
+
+9. **Remember previous route**  
+  ```js
+    var app = require('cthulhu')({
+      // ...
+      passRoutes: ['api', 'auth']
+      // ...
+    });
+  ```
+  Cthulhu remembers all previous routes the user was on and stores it in `req.session.returnTo`. If you would like certain routes to not get saved, specify them in the passRoutes in an Array.
