@@ -192,9 +192,8 @@ module.exports = function(config) {
   /**
    * Remember original destination before login.
    */
-  app.use(middleware.remember({
-    passRoutes: [ "auth", "login","logout","signup","fonts","favicon" ]
-  }));
+  var passRoutes = config.passRoutes || [];
+  app.use(middleware.remember.bind(app, new RegExp(passRoutes.join("|"), "i")));
 
   /**
    * Enable flash messages
@@ -228,9 +227,7 @@ module.exports = function(config) {
   /**
    * Set local variables for use in views
    */
-  app.use(middleware.locals({
-    appName: config.appName
-  }));
+  app.use(middleware.locals.bind(app, config.locals || {}));
 
   /**
    * Helper middleware to check that req is authenticated. Continue if it is
