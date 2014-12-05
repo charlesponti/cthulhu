@@ -1,8 +1,6 @@
 'use strict';
 
-
 var _ = require('lodash');
-var lusca = require('lusca');
 var EventEmitter = require('events').EventEmitter;
 
 exports.cors = function(req, res, next) {
@@ -47,12 +45,15 @@ exports.remember = function(config) {
 */
 exports.locals = function(config) {
   /**
-  * Middleware
-  * @param  {IncomingMessage}   req
-  * @param  {ServerResponse}   res
-  * @param  {Function} next
-  */
+   * Middleware
+   * @param  {IncomingMessage} req
+   * @param  {ServerResponse} res
+   * @param  {Function} next
+   */
   return function(req, res, next) {
+    // Assign config to self or object literal if no config supplied
+    config = config || {};
+
     if (_.isPlainObject(config)) {
       _.extend(res.locals, config);
     }
