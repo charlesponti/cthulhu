@@ -230,27 +230,6 @@ module.exports = function(config) {
   app.use(middleware.locals.bind(app, config.locals || {}));
 
   /**
-   * Helper middleware to check that req is authenticated. Continue if it is
-   * authenticated or redirect if it is not.
-   * @param  {IncomingMessage}   req
-   * @param  {ServerResponse}   res
-   * @param  {Function} next
-   */
-  app.securePath = function(req, res, next) {
-    var message = 'You must be logged in to access this resource';
-    if (req.isAuthenticated()) {
-      next();
-    } else if (/api/.test(req.baseUrl)) {
-      res.status(401).json({
-        message: message
-      });
-    } else {
-      req.flash('error', message);
-      res.redirect('/');
-    }
-  };
-
-  /**
    * Start Cthulhu.
    */
   app.start = function() {
