@@ -74,6 +74,21 @@ Cthulhu is just the server portion, packed with all the stuff that I wish, and I
 
 8. **Logging** (`winston`)
   ```js
+    var app = require('cthulhu')({
+      // ...
+      logFile: './logs/all-logs.log',
+      // ...
+    });
+
+    app.logger.info('Holy cow!');
+    app.logger.warn('Meowzers...');
+  ```
+
+  The example above will add a logger to `app.logger`.
+
+  **Name-spaced loggers**
+
+  ```js
     app.addLogger('someLogger', './logs/some-logs.log');
     // NOTE: The directory './logs' must exist in order
     // for the 'some-logs.log' file to be created.
