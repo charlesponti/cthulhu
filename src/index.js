@@ -220,7 +220,7 @@ module.exports = function(config) {
   /**
    * Enable Lusca security
    */
-  cthulhu.use(lusca({
+  cthulhu.use(lusca(config.lusca || {
     csrf: true,
     csp: {
       default_src: "'self'",

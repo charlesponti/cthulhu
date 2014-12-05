@@ -67,6 +67,16 @@ Cthulhu is just the server portion, packed with all the stuff that I wish, and I
 5. **WebSockets** (`socket.io`)
 
 6. **Security** (`lusca`)  
+  ```js
+  var app = require('cthulhu')({
+    // ...
+    lusca: {
+      csrf: true,
+      // ...
+    }
+    // ...
+  })
+  ```
   I chose to use the Lusca module for security because if it's secure enough for PayPal than it's secure enough for me.
 
 7. **Templating** (`swig`)  
