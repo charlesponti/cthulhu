@@ -18,57 +18,44 @@ exports.cors = function(req, res, next) {
 
 /**
  * Remember the route the user was on before authentication
- * @param  {object} config
+ * @param  {object} routes Routes to exclude
+ * @param  {IncomingMessage} req
+ * @param  {ServerResponse} res
+ * @param  {Function} next
  */
-exports.remember = function(config) {
-  if (config.passRoutes && config.passRoutes.join) {
-    var passRoutes = new RegExp(config.passRoutes.join("|"), "i");
-
-    return function(req, res, next) {
-      var path = req.path.split('/')[1];
-
-      if (passRoutes.test(path)) {
-        return next();
-      }
-
-      req.session.returnTo = req.path;
-      next();
-    };
-  } else {
-    throw new Error("Must supply passRoutes config as Array of strings");
+exports.remember = function(routes, req, res, next) {
+  if (routes.test(req.path)) {
+    return next();
   }
+
+  req.session.returnTo = req.path;
+  next();
 };
 
 /**
 * Attach local variables to ServerResponse
-* @return {Function}
+* @param {object} locals
+* @param  {IncomingMessage} req
+* @param  {ServerResponse} res
+* @param  {Function} next
 */
-exports.locals = function(config) {
+exports.locals = function(locals, req, res, next) {
+
+  if (_.isPlainObject(locals)) {
+    _.extend(res.locals, locals);
+  }
+
   /**
-   * Middleware
-   * @param  {IncomingMessage} req
-   * @param  {ServerResponse} res
-   * @param  {Function} next
-   */
-  return function(req, res, next) {
-    // Assign config to self or object literal if no config supplied
-    config = config || {};
+  * Set flash messages to response locals
+  */
+  res.locals.success_message = {};
+  res.locals.error_message = {};
 
-    if (_.isPlainObject(config)) {
-      _.extend(res.locals, config);
-    }
-
-    /**
-    * Set flash messages to response locals
-    */
-    res.locals.success_message = {};
-    res.locals.error_message = {};
-
-    /**
-    * Add current_user(req.user) to response locals
-    */
-    res.locals.app_name = config.appName || "Cthulhu";
-    res.locals.current_user = req.user;
-    next();
-  };
+  /**
+  * Add current_user(req.user) to response locals
+  */
+  res.locals.app_name = locals.appName || "Cthulhu";
+  res.locals.current_user = req.user;
+  next();
+  
 };
