@@ -57,29 +57,29 @@ var week = day * 7;
  */
 module.exports = function(config) {
 
-  var app = express();
+  var cthulhu = express();
 
   /**
    * Store config
    */
-  app._config = config;
+  cthulhu._config = config;
 
   /**
    * Set port. First check configuration or use 3000 as a fallback.
    */
-  app.set('port', config.port);
+  cthulhu.set('port', config.port);
 
   /**
    * Allow for the use of HTTP verbs such as PUT or DELETE in places
    * where the client doesn't support it.
    */
-  app.use(methodOverride());
+  cthulhu.use(methodOverride());
 
   /**
    * If config.mailer, add `nodemailer` to app
    */
   if (config.mailer) {
-    app.mailer = mailer(config.mailer);
+    cthulhu.mailer = mailer(config.mailer);
   }
 
   /**
@@ -89,9 +89,9 @@ module.exports = function(config) {
    * @param {object} config Logger configuration
    * @type {Function}
    */
-  app.addLogger = function(loggerName, logfile, config) {
-    app.loggers = app.loggers || {};
-    app.loggers[loggerName] = logger(logfile, config);
+  cthulhu.addLogger = function(loggerName, logfile, config) {
+    cthulhu.loggers = cthulhu.loggers || {};
+    cthulhu.loggers[loggerName] = logger(logfile, config);
   };
 
 
@@ -99,7 +99,7 @@ module.exports = function(config) {
    * If config.logFile, add `winston` logger to app
    */
   if (config.logFile) {
-    app.logger = logger(config.logFile);
+    cthulhu.logger = logger(config.logFile);
   }
 
   /**
@@ -107,13 +107,13 @@ module.exports = function(config) {
    * routers without needed a dependency on express.
    * @type {express.Router}
    */
-  app.Router = express.Router;
+  cthulhu.Router = express.Router;
 
   /**
    * Set folder for static files (javascript and css)
    */
   if (config.public) {
-    app.use(
+    cthulhu.use(
       express.static(
         path.resolve(cwd, config.public),
         { maxAge: week } // TTL (Time To Live) for static files
@@ -125,61 +125,61 @@ module.exports = function(config) {
    * Set directory where views are stored.
    */
   if (config.views) {
-    app.set('views', path.resolve(cwd, config.views));
+    cthulhu.set('views', path.resolve(cwd, config.views));
   }
 
   /**
    * Set view engine
    */
-  app.engine('html', swig.renderFile);
-  app.set('view engine', 'html');
+  cthulhu.engine('html', swig.renderFile);
+  cthulhu.set('view engine', 'html');
 
   /**
    * Disable view caching
    */
-  app.set('view cache', false);
+  cthulhu.set('view cache', false);
   swig.setDefaults({ cache: false });
 
   /**
    * Add `compression`
    * This module compresses responses.
    */
-  app.use(compress());
+  cthulhu.use(compress());
 
   /**
    * Add `morgan`
    * This module is used for logging HTTP requests.
    */
-  app.use(morgan('dev'));
+  cthulhu.use(morgan('dev'));
 
   /**
    * Add `body-parser`
    */
-  app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({ extended: true }));
+  cthulhu.use(bodyParser.json());
+  cthulhu.use(bodyParser.urlencoded({ extended: true }));
 
   /**
    * Add `express-validator`
    * This module allows values in req.body to be validated
    * with the use of helper methods.
    */
-  app.use(express_validator());
+  cthulhu.use(express_validator());
 
   /**
    * Add cookie-parser
    */
-  app.use(cookieParser());
+  cthulhu.use(cookieParser());
 
   /**
    * 500 Error Handler.
    */
-  app.use(errorHandler());
+  cthulhu.use(errorHandler());
 
   /**
    * Create session store
    */
   if (config.sessionSecret && config.sessionStore) {
-    app.use(express_session({
+    cthulhu.use(express_session({
       resave: true,
       saveUninitialized: true,
       secret: config.sessionSecret,
@@ -193,22 +193,22 @@ module.exports = function(config) {
    * Remember original destination before login.
    */
   var passRoutes = config.passRoutes || [];
-  app.use(middleware.remember.bind(app, new RegExp(passRoutes.join("|"), "i")));
+  cthulhu.use(middleware.remember.bind(cthulhu, new RegExp(passRoutes.join("|"), "i")));
 
   /**
    * Enable flash messages
    */
-  app.use(flash());
+  cthulhu.use(flash());
 
   /**
    * Set up Sentianl CORS headers
    */
-  app.use(middleware.cors);
+  cthulhu.use(middleware.cors);
 
   /**
    * Enable Lusca security
    */
-  app.use(lusca({
+  cthulhu.use(lusca({
     csrf: true,
     csp: {
       default_src: "'self'",
@@ -227,33 +227,33 @@ module.exports = function(config) {
   /**
    * Set local variables for use in views
    */
-  app.use(middleware.locals.bind(app, config.locals || {}));
+  cthulhu.use(middleware.locals.bind(cthulhu, config.locals || {}));
 
   /**
    * Start Cthulhu.
    */
-  app.start = function() {
+  cthulhu.start = function() {
     /**
      * Add socket to app and begin listening on port.
      */
-    var server = http.createServer(app);
-    app.socket = io.listen(server).sockets;
+    var server = http.createServer(cthulhu);
+    cthulhu.socket = io.listen(server).sockets;
 
     /**
      * Emit initial message
      */
-    app.socket.on('connection', function(socket) {
+    cthulhu.socket.on('connection', function(socket) {
       socket.emit('message', { message: 'Cthulhu has you in its grips.' });
     });
 
     /**
      * Start application server.
      */
-    server.listen(app.get('port'), function() {
-      console.log('Cthulhu has risen at port', app.get('port'), 'in', app.get('env'), 'mode');
+    server.listen(cthulhu.get('port'), function() {
+      console.log('Cthulhu has risen at port', cthulhu.get('port'), 'in', cthulhu.get('env'), 'mode');
     });
   };
 
-  return app;
+  return cthulhu;
 
 };
