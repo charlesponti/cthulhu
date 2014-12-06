@@ -50,19 +50,12 @@ var hour = 3600000;
 var day = hour * 24;
 var week = day * 7;
 
-
-/**
- * Export Router
- * @type {express.Router}
- */
-module.exports.Router = express.Router;
-
 /**
  * Application constructor
  * @param {object} config Initial configuration of application
  * @return {object} application
  */
-module.exports = function(config) {
+exports = module.exports = function(config) {
 
   var cthulhu = express();
 
@@ -276,3 +269,9 @@ module.exports = function(config) {
   return cthulhu;
 
 };
+
+/**
+ * Export Router
+ * @type {express.Router}
+ */
+exports.Router = express.Router;
