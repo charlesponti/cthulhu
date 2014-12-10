@@ -31,7 +31,6 @@ var express = require('express');
 var flash = require('express-flash');
 var compress = require('compression');
 var bodyParser = require('body-parser');
-var errorHandler = require('errorhandler');
 var cookieParser = require('cookie-parser');
 var methodOverride = require('method-override');
 var express_session = require('express-session');
@@ -181,11 +180,6 @@ exports = module.exports = function(config) {
    * Add cookie-parser
    */
   cthulhu.use(cookieParser());
-
-  /**
-   * 500 Error Handler.
-   */
-  cthulhu.use(errorHandler());
 
   /**
    * Create session store
