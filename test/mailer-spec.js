@@ -1,9 +1,8 @@
-'use strict';
-
 describe('Mailer', function() {
+  'use strict';
 
-  var Mailer = require('../src/mailer');
   var mailer;
+  var Mailer = require('../src/mailer');
 
   beforeEach(function() {
     mailer = Mailer({
@@ -20,14 +19,13 @@ describe('Mailer', function() {
 
   describe('#sendMail', function(){
     it('should pass sendMail correct params', function() {
-      mailer.sendMailCallback = 'fooFunction';
       mailer.sendMail({
         to: 'foo@foo.com',
         from: 'foo@foo.com',
         subject: 'fooSubject',
         html: 'fooHTML',
         text :'fooText'
-      });
+      }, function() {});
       var args = mailer.transporter.sendMail.mostRecentCall.args;
       expect(mailer.transporter.sendMail).toHaveBeenCalled();
       expect(args[0].from).toEqual('foo@foo.com');
@@ -35,7 +33,6 @@ describe('Mailer', function() {
       expect(args[0].subject).toEqual('fooSubject');
       expect(args[0].text).toEqual('fooText');
       expect(args[0].html).toEqual('fooHTML');
-      expect(args[1]).toEqual('fooFunction');
     });
   });
 

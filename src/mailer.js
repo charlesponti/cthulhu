@@ -33,17 +33,16 @@ module.exports = function Mailer(config) {
     'password'
   ];
 
-  /**
-   * Check for necessary configurations
-   */
+  // Check for necessary configurations
   _.each(requiredFields, function(field) {
     if (!config[field]) {
       throw new Error('Must supply Mailer with '+field);
+      util.log('Must supply Mailer with '+field);
     }
   });
 
-  mailer.email = config.from;
-
+  // Set transport to mailer which is the configuration of the service
+  // being used for sending mail.
   mailer.transport = {
     service: config.service,
     auth: {
@@ -52,6 +51,7 @@ module.exports = function Mailer(config) {
     }
   };
 
+  // Set transporter to mailer used for sending mail
   mailer.transporter = nodemailer.createTransport(mailer.transport);
 
   /**
@@ -61,9 +61,9 @@ module.exports = function Mailer(config) {
    * @param {Object} info
    * @returns {*}
    */
-   mailer.sendMailCallback = function (callback, error, info) {
+   mailer.sendMailCallback = function(callback, error, info) {
     if (error) {
-      return console.log(error);
+      return util.log(error);
     }
     util.log('Message sent: ' + info.response);
     callback();
