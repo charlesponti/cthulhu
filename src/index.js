@@ -257,6 +257,12 @@ exports = module.exports = function(config) {
 };
 
 /**
+ * Export mailer
+ * @type {[type]}
+ */
+exports.Mailer = mailer;
+
+/**
  * Export Router
  * @type {express.Router}
  */
