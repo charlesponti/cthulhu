@@ -8,8 +8,7 @@
 var env = process.env.NODE_ENV;
 
 /**
- * Current working directory from which cthulhu is
- * being used.
+ * Current working directory from which cthulhu is being used.
  * @type {String}
  * @private
  */
@@ -100,13 +99,6 @@ exports = module.exports = function(config) {
   if (config.logFile) {
     cthulhu.logger = logger(config.logFile);
   }
-
-  /**
-   * Add express.Router to app in order for user's of cthulhu to create
-   * routers without needed a dependency on express.
-   * @type {express.Router}
-   */
-  cthulhu.Router = express.Router;
 
   /**
    * Set folder for static files (javascript and css)
