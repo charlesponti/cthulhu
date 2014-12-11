@@ -49,22 +49,19 @@ var day = hour * 24;
 var week = day * 7;
 
 /**
- * Application constructor
+ * Cthulhu application factory
  * @param {object} config Initial configuration of application
  * @return {object} application
  */
 exports = module.exports = function(config) {
 
+  // Set cthulhu to base express application
   var cthulhu = express();
 
-  /**
-   * Store config
-   */
+  // Store value of config in private variable
   cthulhu._config = config;
 
-  /**
-   * Set port. First check configuration or use 3000 as a fallback.
-   */
+  // Set port. First check configuration or use 3000 as a fallback.
   cthulhu.set('port', config.port);
 
   /**
