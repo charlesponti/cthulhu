@@ -4,13 +4,26 @@
  * Module dependencies
  */
 var _ = require('lodash');
+var util = require('util');
 var nodemailer = require('nodemailer');
 
 /**
- * `Mailer` constructor
- * @constructor
+ * Factory function for constructing a mailer
+ * @return {object}
+ * @public
+ *
+ * **EXAMPLE:**
+ *
+ * ```js
+ *   var cthulhu = require('cthulhu');
+ *   var mailer = cthulhu.mailer({
+ *     service: 'gmail',
+ *     username: 'foo@gmail.com',
+ *     password: 'foobarbazqux'
+ *   });
+ * ```
  */
- module.exports = function(config) {
+module.exports = function Mailer(config) {
 
   var mailer = {};
 
@@ -43,32 +56,36 @@ var nodemailer = require('nodemailer');
 
   /**
    * Callback to be executed if error occurs
+   * @param {function} callback Callback to be executed after mail is sent
    * @param {Error} error
    * @param {Object} info
    * @returns {*}
    */
-   mailer.sendMailCallback = function (error, info) {
+   mailer.sendMailCallback = function (callback, error, info) {
     if (error) {
       return console.log(error);
     }
-    console.log('Message sent: ' + info.response);
+    util.log('Message sent: ' + info.response);
+    callback();
   };
 
   /**
    * Send mail with defined transport object
-   * @param {Array} to List of receivers
-   * @param {String} subject Subject line
-   * @param {String} text Plain text body
-   * @param {String} html HTML body
+   * @param {object} config Configuration of email
+   *     @param {Array}  config.to List of receivers
+   *     @param {String} config.subject Subject line
+   *     @param {String} config.text Plain text body
+   *     @param {String} config.html HTML body
+   * @param {function} callback Callback to be executed after mail is sent
    */
-   mailer.sendMail = function(options) {
-     mailer.transporter.sendMail({
-      from: options.from,
-      to: options.to,
-      subject: options.subject,
-      text: options.text,
-      html: options.html
-    }, this.sendMailCallback);
+   mailer.sendMail = function(config, callback) {
+    mailer.transporter.sendMail({
+      from: config.from,
+      to: config.to,
+      subject: config.subject,
+      text: config.text,
+      html: config.html
+    }, mailer.sendMailCallback.bind(mailer, callback));
   };
 
   return mailer;
