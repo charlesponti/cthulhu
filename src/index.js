@@ -70,9 +70,7 @@ exports = module.exports = function(config) {
    */
   cthulhu.use(methodOverride());
 
-  /**
-   * If config.mailer, add `nodemailer` to app
-   */
+  // If config.mailer, add `nodemailer` to app
   if (config.mailer) {
     cthulhu.mailer = mailer(config.mailer);
   }
@@ -90,16 +88,12 @@ exports = module.exports = function(config) {
   };
 
 
-  /**
-   * If config.logFile, add `winston` logger to app
-   */
+  // If config.logFile, add `winston` logger to app
   if (config.logFile) {
     cthulhu.logger = logger(config.logFile);
   }
 
-  /**
-   * Set folder for static files (javascript and css)
-   */
+  // Set folder for static files.
   if (config.public) {
     cthulhu.use(
       express.static(
@@ -109,38 +103,26 @@ exports = module.exports = function(config) {
     );
   }
 
-  /**
-   * Set directory where views are stored.
-   */
+  // Set directory where views are stored.
   if (config.views) {
     cthulhu.set('views', path.resolve(cwd, config.views));
   }
 
-  /**
-   * Set view engine
-   */
+  // Set view engine
   cthulhu.engine('html', swig.renderFile);
   cthulhu.set('view engine', 'html');
 
-  /**
-   * Disable view caching
-   */
+  // Disable view caching
   cthulhu.set('view cache', false);
   swig.setDefaults({ cache: false });
 
-  /**
-   * Add `compression`
-   * This module compresses responses.
-   */
+  // Add `compression` for compressing responses.
   cthulhu.use(compress());
 
-  /**
-   * Add `morgan`
-   * This module is used for logging HTTP requests.
-   */
-   var morganConfig = config.morgan || 'dev';
+  // Add `morgan` for logging HTTP requests.
+  var morganConfig = config.morgan || 'dev';
 
-   if (cthulhu.logger) {
+  if (cthulhu.logger) {
     cthulhu.use(morgan(morganConfig, {
       stream: {
         write: function(message, encoding) {
@@ -152,27 +134,21 @@ exports = module.exports = function(config) {
     cthulhu.use(morgan(morganConfig));
   }
 
-  /**
-   * Add `body-parser`
-   */
+  // Add `body-parser` for parsing request body
   cthulhu.use(bodyParser.json());
   cthulhu.use(bodyParser.urlencoded({ extended: true }));
 
   /**
    * Add `express-validator`
-   * This module allows values in req.body to be validated
-   * with the use of helper methods.
+   * This module allows values in req.body to be validated with the use of
+   * helper methods.
    */
   cthulhu.use(express_validator());
 
-  /**
-   * Add cookie-parser
-   */
+  // Add cookie-parser
   cthulhu.use(cookieParser());
 
-  /**
-   * Create session store
-   */
+  // Create session store
   if (config.sessionSecret && config.sessionStore) {
     cthulhu.use(express_session({
       resave: true,
@@ -184,25 +160,17 @@ exports = module.exports = function(config) {
     }));
   }
 
-  /**
-   * Remember original destination before login.
-   */
+  // Remember original destination before login.
   var passRoutes = config.passRoutes || [];
   cthulhu.use(middleware.remember.bind(cthulhu, new RegExp(passRoutes.join("|"), "i")));
 
-  /**
-   * Enable flash messages
-   */
+  // Enable flash messages
   cthulhu.use(flash());
 
-  /**
-   * Set up Sentianl CORS headers
-   */
+  // Set up Sentianl CORS headers
   cthulhu.use(middleware.cors);
 
-  /**
-   * Enable Lusca security
-   */
+  // Enable Lusca security
   cthulhu.use(lusca(config.lusca || {
     csrf: true,
     csp: {
@@ -219,33 +187,25 @@ exports = module.exports = function(config) {
     xssProtection: true
   }));
 
-  /**
-   * Set local variables for use in views
-   */
+  // Set local variables for use in views
   cthulhu.use(middleware.locals.bind(cthulhu, config.locals || {}));
 
-  /**
-   * Start Cthulhu.
-   */
+  // Start Cthulhu.
   cthulhu.start = function() {
-    /**
-     * Add socket to app and begin listening on port.
-     */
+    var port = cthulhu.get('port');
     var server = http.createServer(cthulhu);
+
+    // Add socket to app and begin listening.
     cthulhu.socket = io.listen(server).sockets;
 
-    /**
-     * Emit initial message
-     */
+    // Emit initial message
     cthulhu.socket.on('connection', function(socket) {
       socket.emit('message', { message: 'Cthulhu has you in its grips.' });
     });
 
-    /**
-     * Start application server.
-     */
-    server.listen(cthulhu.get('port'), function() {
-      console.log('Cthulhu has risen at port', cthulhu.get('port'), 'in', cthulhu.get('env'), 'mode');
+    // Start application server.
+    server.listen(port, function() {
+      util.log('Cthulhu has risen at port', port, 'in', cthulhu.get('env'), 'mode');
     });
   };
 
@@ -253,10 +213,7 @@ exports = module.exports = function(config) {
 
 };
 
-/**
- * Export mailer
- * @type {[type]}
- */
+// Export mailer
 exports.Mailer = mailer;
 
 /**
