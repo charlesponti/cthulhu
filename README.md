@@ -8,7 +8,7 @@ This project started about a year ago when I was looking for a great boilerplate
 
 I started building a whole slew of NodeJS applications and kept a boilerplate project on the side where I would store all of the best practices I had learned. That boilerplate became pretty large, monolithic, and opinionated, which were all of the things that I had hated about working with a run-of-the-mill Rails application. (Yes, I know there are ways of modularised Rails apps, but let's be honest with ourselves: most Rails apps, even those written by companies, are big, monolithic nightmares.)
 
-So, after studying software modularity from UNIX, computer science research papers, and the NodeJS community, I have decided to ditch the whole boilerplate idea and instead break up all the best practices I have learned into independent modules. The point of these modules are to capture everything I learn on my journey as a software developer.
+So, after studying software modularity and the UNIX philosophy, reading a slew computer science research papers, and speaking with members of the NodeJS community, I have decided to ditch the whole boilerplate idea and instead break up all the best practices I have learned into independent modules. The point of these modules are to capture everything I learn on my journey as a software developer.
 
 Cthulhu is just the server portion, packed with all the stuff that I wish, and I'm sure many other people wished as well, had come with the Express server.
 
@@ -25,7 +25,8 @@ Cthulhu is just the server portion, packed with all the stuff that I wish, and I
 2. **Configure**
 
   ```js
-    var app = require('cthulhu')({
+    var app = require('cthulhu')
+    app.configure({
       port: 4000,
       public: './public',
       views: './views',
@@ -56,17 +57,17 @@ Cthulhu is just the server portion, packed with all the stuff that I wish, and I
 
 ## Features
 
-1. **Request body parsing** (`body-parser`)
+#### Request body parsing (`body-parser`)
 
-2. **Resource Compression** (`compression`)
+#### Resource Compression (`compression`)
 
-3. **Cookie Parser** (`cookie-parser`)
+#### Cookie Parser (`cookie-parser`)
 
-4. **Sessions** (`express-session` and `connect-mongo`)
+#### Sessions (`express-session` and `connect-mongo`)
 
-5. **WebSockets** (`socket.io`)
+#### WebSockets (`socket.io`)
 
-6. **Security** (`lusca`)  
+#### Security (`lusca`)  
   ```js
   var app = require('cthulhu')({
     // ...
@@ -77,12 +78,13 @@ Cthulhu is just the server portion, packed with all the stuff that I wish, and I
     // ...
   })
   ```
+
   I chose to use the Lusca module for security because if it's secure enough for PayPal than it's secure enough for me.
 
-7. **Templating** (`swig`)  
+#### Templating (`swig`)
   Swig is used by default, but you can change this to whichever templating engine you prefer by specifying configuring Cthulhu in the same way you would an express application.
 
-8. **Logging** (`winston`)
+#### Logging (`winston`)
   ```js
     var app = require('cthulhu')({
       // ...
@@ -127,17 +129,8 @@ Cthulhu is just the server portion, packed with all the stuff that I wish, and I
     app.loggers.special.warn('Danger, Will Robinson!');
   ```
 
-9. **Remember previous route**  
-  ```js
-    var app = require('cthulhu')({
-      // ...
-      passRoutes: ['api', 'auth']
-      // ...
-    });
-  ```
-  Cthulhu remembers all previous routes the user was on and stores it in `req.session.returnTo`. If you would like certain routes to not get saved, specify them in the passRoutes in an Array.
+#### Email
 
-10. **Email**
   ```js
     var app = require('cthulhu')({
       // ...
