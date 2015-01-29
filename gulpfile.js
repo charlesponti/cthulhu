@@ -1,35 +1,27 @@
 'use strict';
 
 var gulp = require('gulp');
-var watch = require('gulp-watch');
-var jsHint = require('gulp-jshint');
+var jshint = require('gulp-jshint');
 var stylish = require('jshint-stylish');
-var concatinate = require('gulp-concat');
 
 var sources = {
-  backend: [
-    './src/**/*.js'
-  ]
+  backend: ['./src/**/*.js']
 };
 
 /**
- * `lint-backend`
- * Run JSHint against server-side .js files
+ * @desc Run JSHint against server-side .js files
  */
-gulp.task('lint-backend', function() {
+gulp.task('lint', function() {
   return gulp.src(sources.backend)
-      .pipe(jsHint())
-      .pipe(jsHint.reporter(stylish));
+      .pipe(jshint())
+      .pipe(jshint.reporter(stylish));
 });
 
 /**
- * Watch for file changes
+ * @desc Watch for file changes
  */
 gulp.task('watch', function() {
-  return gulp.src(sources.backend)
-    .pipe(watch({ glob: sources.backend }, function() {
-      gulp.start('lint-backend');
-    }));
+  return gulp.watch(sources.backend, ['lint']);
 });
 
-gulp.task('default', ['lint-backend', 'watch' ]);
+gulp.task('default', ['lint', 'watch' ]);
