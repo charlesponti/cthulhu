@@ -211,12 +211,13 @@ cthulhu.configure = function(config) {
 cthulhu.start = function() {
   var port = cthulhu.get('port');
   var env = cthulhu.get('env');
+
   // Add socket to app and begin listening.
   cthulhu.socket = io(cthulhu.server);
 
   // Start application server.
   cthulhu.server.listen(port, function() {
-    return util.log('Cthulhu has risen at port', port, 'in', env, 'mode');
+    return util.log('Cthulhu has risen at port '+port+' in '+env+' mode');
   });
 
   // Emit initial message
