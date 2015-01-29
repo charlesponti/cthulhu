@@ -4,22 +4,23 @@
  * Module dependencies.
  * @type {exports}
  */
-var util = require('util');
-var http = require('http');
-var path = require('path');
-var lusca = require('lusca');
-var io = require('socket.io');
-var morgan = require('morgan');
-var express = require('express');
-var flash = require('express-flash');
-var compress = require('compression');
 var bodyParser = require('body-parser');
-var swig = require('swig');
+var compress = require('compression');
 var cookieParser = require('cookie-parser');
+var express = require('express');
+var expressValidator = require('express-validator');
+var expressSession = require('express-session');
+var flash = require('express-flash');
+var http = require('http');
+var io = require('socket.io');
+var lusca = require('lusca');
 var methodOverride = require('method-override');
-var express_session = require('express-session');
-var express_validator = require('express-validator');
-var MongoStore = require('connect-mongo')(express_session);
+var morgan = require('morgan');
+var path = require('path');
+var redis = require('redis');
+var RedisStore = require('connect-redis')(expressSession);
+var swig = require('swig');
+var util = require('util');
 
 /**
  * Current Node environment
@@ -115,7 +116,7 @@ cthulhu.configure = function(config) {
   cthulhu.set('view engine', 'html');
 
   // Set views folder
-  cthulhu.set('views', path.resolve(__dirname, config.views));
+  cthulhu.set('views', path.resolve(global._cwd, config.views));
 
   // Disable view caching if in development
   if (env === 'development') {
@@ -160,19 +161,23 @@ cthulhu.configure = function(config) {
    * This module allows values in req.body to be validated with the use of
    * helper methods.
    */
-  cthulhu.use(express_validator());
+  cthulhu.use(expressValidator());
 
   // Add cookie-parser
   cthulhu.use(cookieParser());
 
   // Create session store
   if (config.sessionSecret && config.sessionStore) {
-    cthulhu.use(express_session({
-      resave: true,
-      saveUninitialized: true,
+    cthulhu.use(expressSession({
+      // Do not save session if nothing has been modified
+      resave: false,
+      // Do not create session unless something is to be stored
+      saveUninitialized: false,
       secret: config.sessionSecret,
-      store: new MongoStore({
-        db: config.sessionStore
+      store: new RedisStore({
+        host: 'localhost',
+        port: 6379,
+        client: redis.createClient()
       })
     }));
   }
