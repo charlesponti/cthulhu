@@ -3,7 +3,6 @@
 /**
  * Module dependencies
  */
-var _ = require('lodash');
 var util = require('util');
 var nodemailer = require('nodemailer');
 
@@ -16,7 +15,7 @@ var nodemailer = require('nodemailer');
  *
  * ```js
  *   var cthulhu = require('cthulhu');
- *   var mailer = cthulhu.mailer({
+ *   var mailer = cthulhu.Mailer({
  *     service: 'gmail',
  *     username: 'foo@gmail.com',
  *     password: 'foobarbazqux'
