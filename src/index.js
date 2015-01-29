@@ -1,20 +1,6 @@
 'use strict';
 
 /**
- * Current Node environment
- * @type {String}
- * @private
- */
-var env = process.env.NODE_ENV;
-
-/**
- * Current working directory from which cthulhu is being used.
- * @type {String}
- * @private
- */
-var cwd = process.cwd();
-
-/**
  * Module dependencies.
  * @type {exports}
  */
@@ -35,6 +21,20 @@ var methodOverride = require('method-override');
 var express_session = require('express-session');
 var express_validator = require('express-validator');
 var MongoStore = require('connect-mongo')(express_session);
+
+/**
+ * Current Node environment
+ * @type {String}
+ * @private
+ */
+var env = process.env.NODE_ENV;
+
+/**
+ * Current working directory from which cthulhu is being used.
+ * @type {String}
+ * @private
+ */
+global._cwd = path.dirname(require.main.filename);
 
 /**
  * Application dependencies
@@ -100,7 +100,7 @@ cthulhu.configure = function(config) {
   if (config.public) {
     cthulhu.use(
       express.static(
-        path.resolve(cwd, config.public),
+        path.resolve(global._cwd, config.public),
         { maxAge: week } // TTL (Time To Live) for static files
       )
     );
@@ -108,7 +108,7 @@ cthulhu.configure = function(config) {
 
   // Set directory where views are stored.
   if (config.views) {
-    cthulhu.set('views', path.resolve(__dirname, config.views));
+    cthulhu.set('views', path.resolve(global._cwd, config.views));
   }
 
   // Set view engine

@@ -12,7 +12,7 @@ var winston = require('winston');
  */
 module.exports = function(logfile, config) {
 
-  var logFile = path.resolve(process.cwd(), logfile);
+  var logFile = path.resolve(global._cwd, logfile);
 
   config = config || {};
   config.file = config.file || {};
