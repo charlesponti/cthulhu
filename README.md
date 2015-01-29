@@ -12,6 +12,24 @@ So, after studying software modularity and the UNIX philosophy, reading a slew c
 
 Cthulhu is just the server portion, packed with all the stuff that I wish, and I'm sure many other people wished as well, had come with the Express server.
 
+### v1.7.0 Breaking Changes:
+* Updated to latest version of Express
+* Updated to latest version of Socket.io
+* Fix issue related to `process.cwd()`. You can now run multiple `Cthulhu` instances within the same directory.
+* Removed `middleware.remember`
+* Removed `middleware.cors`. I suggest using [cors](https://www.npmjs.com/package/cors) as if provides really dynamic configuration options. Possibly might add this in by default and allow users to pass in their configuration in `cthulhu.configure` but not entirely sure yet.
+  ```js
+   var cthulhu = require('cthulhu');
+   var cors = require('cors');
+
+   cthulhu.configure({
+     // Configuration
+   });
+
+   cthulhu.use(cors());
+  ```
+* Fix tests to reflect changes.
+
 ---
 
 ## USAGE
@@ -26,6 +44,7 @@ Cthulhu is just the server portion, packed with all the stuff that I wish, and I
 
   ```js
     var app = require('cthulhu')
+
     app.configure({
       port: 4000,
       public: './public',
