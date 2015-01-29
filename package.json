@@ -21,7 +21,6 @@
     "express-flash": "0.0.2",
     "express-session": "^1.10.1",
     "express-validator": "^2.8.0",
-    "lodash": "^2.4.1",
     "lusca": "^1.0.1",
     "method-override": "*",
     "morgan": "^1.5.1",
@@ -32,11 +31,8 @@
   },
   "devDependencies": {
     "gulp": "^3.8.7",
-    "gulp-concat": "^2.3.4",
     "gulp-jshint": "^1.8.4",
-    "gulp-watch": "^0.7.0",
     "jasmine-node": "^1.14.5",
-    "jshint-stylish": "^0.4.0",
-    "supertest": "^0.13.0"
+    "jshint-stylish": "^0.4.0"
   }
 }
