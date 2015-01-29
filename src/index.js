@@ -4,7 +4,6 @@
  * Module dependencies.
  * @type {exports}
  */
-var _ = require('lodash');
 var util = require('util');
 var http = require('http');
 var path = require('path');
