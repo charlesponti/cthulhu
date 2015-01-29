@@ -181,7 +181,7 @@ cthulhu.configure = function(config) {
     xssProtection: true
   }));
 
-  cthulhu.server = http.createServer(cthulhu);
+  cthulhu.server = http.Server(cthulhu);
 
   return cthulhu;
 };
@@ -189,18 +189,18 @@ cthulhu.configure = function(config) {
 // Start Cthulhu.
 cthulhu.start = function() {
   var port = cthulhu.get('port');
-
+  var env = cthulhu.get('env');
   // Add socket to app and begin listening.
-  cthulhu.socket = io.listen(cthulhu.server).sockets;
-
-  // Emit initial message
-  cthulhu.socket.on('connection', function(socket) {
-    return socket.emit('message', { message: 'Cthulhu has you in its grips.' });
-  });
+  cthulhu.socket = io(cthulhu.server);
 
   // Start application server.
   cthulhu.server.listen(port, function() {
-    return util.log('Cthulhu has risen at port', port, 'in', cthulhu.get('env'), 'mode');
+    return util.log('Cthulhu has risen at port', port, 'in', env, 'mode');
+  });
+
+  // Emit initial message
+  cthulhu.socket.on('connection', function(socket) {
+    return socket.emit('message', { message: 'Cthulhu has you in her grips.' });
   });
 
   return cthulhu;
