@@ -9,7 +9,8 @@ describe('Cthulhu', function() {
 
   beforeEach(function() {
     spyOn(fs, 'writeFileSync');
-    app = cthulhu({
+    app = cthulhu.configure({
+      port: 1234,
       public: './',
       views: './',
       logFile: './logs/test.log'
@@ -18,6 +19,10 @@ describe('Cthulhu', function() {
 
   afterEach(function() {
     app = undefined;
+  });
+
+  it('should call fs.writeFileSync', function() {
+    expect(fs.writeFileSync).toHaveBeenCalled();
   });
 
   describe('.logger', function() {
