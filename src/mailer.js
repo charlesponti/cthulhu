@@ -33,11 +33,12 @@ module.exports = function Mailer(config) {
   ];
 
   // Check for necessary configurations
-  _.each(requiredFields, function(field) {
+  requiredFields.forEach(function(field) {
     if (!config[field]) {
-      throw new Error('Must supply Mailer with '+field);
       util.log('Must supply Mailer with '+field);
+      throw new Error('Must supply Mailer with '+field);
     }
+    return;
   });
 
   // Set transport to mailer which is the configuration of the service
