@@ -21,7 +21,6 @@ var cwd = process.cwd();
 var _ = require('lodash');
 var util = require('util');
 var http = require('http');
-var swig = require('swig');
 var path = require('path');
 var lusca = require('lusca');
 var io = require('socket.io');
@@ -30,6 +29,7 @@ var express = require('express');
 var flash = require('express-flash');
 var compress = require('compression');
 var bodyParser = require('body-parser');
+var consolidate = require('consolidate');
 var cookieParser = require('cookie-parser');
 var methodOverride = require('method-override');
 var express_session = require('express-session');
@@ -42,26 +42,28 @@ var MongoStore = require('connect-mongo')(express_session);
  */
 var mailer = require('./mailer');
 var logger = require('./logger');
-var middleware = require('./middleware');
 
 var hour = 3600000;
 var day = hour * 24;
 var week = day * 7;
+
+// Set cthulhu to base express application
+var cthulhu = express();
 
 /**
  * Cthulhu application factory
  * @param {object} config Initial configuration of application
  * @return {object} application
  */
-exports = module.exports = function(config) {
-
-  // Set cthulhu to base express application
-  var cthulhu = express();
+cthulhu.configure = function(config) {
 
   // Store value of config in private variable
   cthulhu._config = config;
 
   // Set port. First check configuration or use 3000 as a fallback.
+  if (!config.port) {
+    throw new Error('Must supply port');
+  }
   cthulhu.set('port', config.port);
 
   /**
@@ -85,6 +87,7 @@ exports = module.exports = function(config) {
   cthulhu.addLogger = function(loggerName, logfile, config) {
     cthulhu.loggers = cthulhu.loggers || {};
     cthulhu.loggers[loggerName] = logger(logfile, config);
+    return cthulhu;
   };
 
 
@@ -105,16 +108,15 @@ exports = module.exports = function(config) {
 
   // Set directory where views are stored.
   if (config.views) {
-    cthulhu.set('views', path.resolve(cwd, config.views));
+    cthulhu.set('views', path.resolve(__dirname, config.views));
   }
 
   // Set view engine
-  cthulhu.engine('html', swig.renderFile);
+  cthulhu.engine('html', consolidate.swig);
   cthulhu.set('view engine', 'html');
 
   // Disable view caching
   cthulhu.set('view cache', false);
-  swig.setDefaults({ cache: false });
 
   // Add `compression` for compressing responses.
   cthulhu.use(compress());
@@ -126,7 +128,7 @@ exports = module.exports = function(config) {
     cthulhu.use(morgan(morganConfig, {
       stream: {
         write: function(message, encoding) {
-          cthulhu.logger.info(message);
+          return cthulhu.logger.info(message);
         }
       }
     }));
@@ -160,15 +162,8 @@ exports = module.exports = function(config) {
     }));
   }
 
-  // Remember original destination before login.
-  var passRoutes = config.passRoutes || [];
-  cthulhu.use(middleware.remember.bind(cthulhu, new RegExp(passRoutes.join("|"), "i")));
-
   // Enable flash messages
   cthulhu.use(flash());
-
-  // Set up Sentianl CORS headers
-  cthulhu.use(middleware.cors);
 
   // Enable Lusca security
   cthulhu.use(lusca(config.lusca || {
@@ -187,31 +182,36 @@ exports = module.exports = function(config) {
     xssProtection: true
   }));
 
-  // Set local variables for use in views
-  cthulhu.use(middleware.locals.bind(cthulhu, config.locals || {}));
-
-  // Start Cthulhu.
-  cthulhu.start = function() {
-    var port = cthulhu.get('port');
-    var server = http.createServer(cthulhu);
-
-    // Add socket to app and begin listening.
-    cthulhu.socket = io.listen(server).sockets;
-
-    // Emit initial message
-    cthulhu.socket.on('connection', function(socket) {
-      socket.emit('message', { message: 'Cthulhu has you in its grips.' });
-    });
-
-    // Start application server.
-    server.listen(port, function() {
-      util.log('Cthulhu has risen at port', port, 'in', cthulhu.get('env'), 'mode');
-    });
-  };
+  cthulhu.server = http.createServer(cthulhu);
 
   return cthulhu;
-
 };
+
+// Start Cthulhu.
+cthulhu.start = function() {
+  var port = cthulhu.get('port');
+
+  // Add socket to app and begin listening.
+  cthulhu.socket = io.listen(cthulhu.server).sockets;
+
+  // Emit initial message
+  cthulhu.socket.on('connection', function(socket) {
+    return socket.emit('message', { message: 'Cthulhu has you in its grips.' });
+  });
+
+  // Start application server.
+  cthulhu.server.listen(port, function() {
+    return util.log('Cthulhu has risen at port', port, 'in', cthulhu.get('env'), 'mode');
+  });
+
+  return cthulhu;
+};
+
+/**
+ * Export cthulhu
+ * @type {express.Application}
+ */
+exports = module.exports = cthulhu;
 
 // Export mailer
 exports.Mailer = mailer;
