@@ -66,7 +66,7 @@ module.exports = function Mailer(config) {
       return util.log(error);
     }
     util.log('Message sent: ' + info.response);
-    callback();
+    return callback();
   };
 
   /**
@@ -79,7 +79,7 @@ module.exports = function Mailer(config) {
    * @param {function} callback Callback to be executed after mail is sent
    */
    mailer.sendMail = function(config, callback) {
-    mailer.transporter.sendMail({
+    return mailer.transporter.sendMail({
       from: config.from,
       to: config.to,
       subject: config.subject,
