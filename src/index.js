@@ -14,7 +14,7 @@ var express = require('express');
 var flash = require('express-flash');
 var compress = require('compression');
 var bodyParser = require('body-parser');
-var consolidate = require('consolidate');
+var swig = require('swig');
 var cookieParser = require('cookie-parser');
 var methodOverride = require('method-override');
 var express_session = require('express-session');
@@ -111,8 +111,24 @@ cthulhu.configure = function(config) {
   }
 
   // Set view engine
-  cthulhu.engine('html', consolidate.swig);
+  cthulhu.engine('html', swig.renderFile);
   cthulhu.set('view engine', 'html');
+
+  // Set views folder
+  cthulhu.set('views', path.resolve(__dirname, config.views));
+
+  // Disable view caching if in development
+  if (env === 'development') {
+    cthulhu.set('view cache', false);
+    swig.setDefaults({
+      cache: false,
+      autoescape: false
+    });
+  } else {
+    swig.setDefaults({
+      autoescape: false
+    });
+  }
 
   // Disable view caching
   cthulhu.set('view cache', false);
