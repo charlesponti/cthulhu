@@ -6,12 +6,15 @@ cthulhu.configure({
   port: 3000,
   views: './views',
   public: './public',
-  sessionStore: 'foo-bar',
-  sessionSecret: 'foo-bar',
+  session: {
+    redisHost: 'localhost',
+    redisPort: 6379,
+    secret: 'foo-bar'
+  },
   logFile: './logs/all-logs.log'
 });
 
-cthulhu.use(function(req, res, next) {
+cthulhu.use(function(req, res) {
   return res.render('index');
 });
 
