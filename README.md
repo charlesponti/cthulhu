@@ -46,13 +46,21 @@ Cthulhu is just the server portion, packed with all the stuff that I wish, and I
     var app = require('cthulhu')
 
     app.configure({
-      port: 4000,
-      public: './public',
+      port: 3000,
+      // Directory were views will be served from
       views: './views',
-      sessionSecret: 'meerkatmanorrox',
-      sessionStore: 'myapp-sessions',
-      appName: 'My Super Awesome App Name',
-      passRoutes: ['api', 'auth']
+      // Directory of static assets
+      public: './public',
+      session: {
+        // Host for your Redis server
+        redisHost: 'localhost',
+        // Port of your Redis server
+        redisPort: 6379,
+        // Secret used for session storage
+        secret: 'foo-bar-secret',
+      },
+      // File to output server log to (optional)
+      logFile: './logs/all-logs.log'
     });
   ```
 
@@ -92,16 +100,16 @@ Cthulhu is just the server portion, packed with all the stuff that I wish, and I
     // ...
     lusca: {
       csrf: true,
-      // ...
+      // etc.
     }
     // ...
   })
   ```
 
-  I chose to use the Lusca module for security because if it's secure enough for PayPal than it's secure enough for me.
+  I chose to use the [Lusca](https://www.npmjs.com/package/lusca) module for security because if it's secure enough for PayPal than it's secure enough for me.
 
-#### Templating (`swig`)
-  Swig is used by default, but you can change this to whichever templating engine you prefer by specifying configuring Cthulhu in the same way you would an express application.
+#### Views
+  [Swig](https://www.npmjs.com/package/swig) is used by default, but you can change this to use the view engine you prefer by not providing a `views` options in `.configure()` and specifying the `views` settings in the same way you would any express application.
 
 #### Logging (`winston`)
   ```js
@@ -127,6 +135,7 @@ Cthulhu is just the server portion, packed with all the stuff that I wish, and I
     app.loggers.someLogger.info('Meow Mix!');
   ```
   You can add a winston logger through the `app.addLogger` API. As its first argument it takes a `String` which is the path to the file you want to log to. You can also pass a config object as the second parameter like so:
+
   ```js
     app.addLogger('special', './logs/special.log', {
       file: {
@@ -148,7 +157,7 @@ Cthulhu is just the server portion, packed with all the stuff that I wish, and I
     app.loggers.special.warn('Danger, Will Robinson!');
   ```
 
-#### Email
+#### Email (`nodemailer`)
 
   ```js
     var app = require('cthulhu')({
