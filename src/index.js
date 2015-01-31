@@ -21,7 +21,7 @@ var util = require('util')
  * @type {String}
  * @private
  */
-global._env = process.env.NODE_ENV
+global._env = process.env.NODE_ENV || 'development'
 
 /**
  * Current working directory from which cthulhu is being used.
