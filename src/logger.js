@@ -3,6 +3,7 @@
 var fs = require('fs');
 var path = require('path');
 var winston = require('winston');
+var mkdir = require('mkdirp');
 
 /**
  * Configure logger
@@ -10,17 +11,20 @@ var winston = require('winston');
  * @param  {object} config Configuration for transports
  * @return {winston.Logger}
  */
-module.exports = function(logfile, config) {
+module.exports = function(logConfig, config) {
+  var logFile;
 
-  var logFile = path.resolve(global._cwd, logfile);
+  mkdir(path.resolve(global._cwd, logConfig.dir), function() {
+    logFile = path.resolve(global._cwd, logfile)
+  })
 
   config = config || {};
   config.file = config.file || {};
   config.console = config.console || {};
 
   // If log file does not exist, create one.
-  if (!fs.existsSync(logFile)) {
-    fs.writeFileSync(logFile);
+  if (!fs.existsSync(logConfig.file)) {
+    fs.writeFileSync(logConfig.file);
   }
 
   winston.emitErrs = true;
@@ -29,7 +33,7 @@ module.exports = function(logfile, config) {
     transports: [
       new winston.transports.File({
         level: config.file.level || 'info',
-        filename: logFile,
+        filename: logConfig.file,
         handleExceptions: config.file.handleExceptions || true,
         json: config.file.json || true,
         maxsize: config.file.maxsize || 5242880, // 5MB

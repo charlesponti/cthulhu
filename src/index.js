@@ -28,7 +28,7 @@ global._env = process.env.NODE_ENV || 'development'
  * @type {String}
  * @private
  */
-global._cwd = path.dirname(require.main.filename)
+global._cwd = path.dirname(require.main.filename);
 
 /**
  * Application dependencies
@@ -96,8 +96,8 @@ cthulhu.configure = function(config) {
 
 
   // If config.logFile, add `winston` logger to app
-  if (config.logFile) {
-    cthulhu.logger = logger(config.logFile)
+  if (config.log.file) {
+    cthulhu.logger = logger(config.log)
   }
 
   // Set folder for static files.
