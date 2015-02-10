@@ -11,8 +11,13 @@ cthulhu.configure({
     redisPort: 6379,
     secret: 'foo-bar'
   },
-  logFile: './logs/all-logs.log'
+  log: {
+    dir: 'logs',
+    file: 'all-logs.log'
+  }
 });
+
+
 
 cthulhu.use(function(req, res) {
   return res.render('index');
