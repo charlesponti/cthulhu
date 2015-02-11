@@ -13,7 +13,10 @@ describe('Cthulhu', function() {
       port: 1234,
       public: './',
       views: './',
-      logFile: './logs/test.log'
+      log: {
+        dir: './logs',
+        file: 'test.log'
+      }
     });
   });
 
