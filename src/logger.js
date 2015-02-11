@@ -3,6 +3,7 @@
 var fs = require('fs');
 var path = require('path');
 var winston = require('winston');
+var mkdirp = require('mkdirp')
 
 /**
  * Configure logger
@@ -16,6 +17,11 @@ module.exports = function(logConfig, config) {
   config = config || {};
   config.file = config.file || {};
   config.console = config.console || {};
+
+  // If logs directory does not exist, create one
+  if (!fs.existsSync(path.resolve(global._cwd, logConfig.dir))) {
+    mkdirp.sync(path.resolve(global._cwd, logConfig.dir))
+  }
 
   // If log file does not exist, create one.
   if (!fs.existsSync(logFile)) {
