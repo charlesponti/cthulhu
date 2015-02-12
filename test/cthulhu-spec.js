@@ -38,7 +38,12 @@ describe('Cthulhu', function() {
 
   describe('.addLogger()', function() {
     it('add a logger', function() {
-      app.addLogger('foo', './logs/bar.log');
+      app.addLogger({
+        name: 'foo',
+        dir: './logs',
+        file: 'bar.log',
+        config: {}
+      });
       expect(app.loggers.foo).not.toEqual(undefined);
       expect(app.loggers.foo.info).not.toEqual(undefined);
       expect(app.loggers.foo.warn).not.toEqual(undefined);

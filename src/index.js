@@ -88,14 +88,16 @@ cthulhu.configure = function(config) {
    * @param {object} config Logger configuration
    * @type {Function}
    */
-  cthulhu.addLogger = function(loggerName, logfile, config) {
+  cthulhu.addLogger = function(options) {
     cthulhu.loggers = cthulhu.loggers || {}
-    cthulhu.loggers[loggerName] = logger(logfile, config)
+    cthulhu.loggers[options.name] = logger({
+      dir: options.dir, 
+      file: options.file
+    }, config)
     return cthulhu
   }
 
-
-  // If config.logFile, add `winston` logger to app
+  // If config.log, add `winston` logger to app
   if (config.log.file) {
     cthulhu.logger = logger(config.log)
   }
