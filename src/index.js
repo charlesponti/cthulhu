@@ -98,7 +98,7 @@ cthulhu.configure = function(config) {
   }
 
   // If config.log, add `winston` logger to app
-  if (config.log.file) {
+  if (config.log && config.log.file) {
     cthulhu.logger = logger(config.log)
   }
 
