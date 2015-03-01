@@ -21,14 +21,14 @@ var util = require('util')
  * @type {String}
  * @private
  */
-global._env = process.env.NODE_ENV || 'development'
+process.env.NODE_ENV = process.env.NODE_ENV || 'development'
 
 /**
  * Current working directory from which cthulhu is being used.
  * @type {String}
  * @private
  */
-global._cwd = process.cwd();
+process.env.INIT_DIR = process.cwd();
 
 /**
  * Application dependencies
