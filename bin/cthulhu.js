@@ -1,26 +1,41 @@
 #!/usr/bin/env node
 
+const fs = require('fs');
 const argv = require('yargs').argv;
 const path = require('path');
 const Liftoff = require('liftoff');
 const cthulhu = require('../src');
+const configFilePath = path.resolve(process.cwd(), './cthulhu.conf.js');
+
+const port = argv.p || argv.port;
+
+
+if (fs.existsSync(configFilePath)) {
+  var config = require(configFilePath);
+  var newCthulhu = cthulhu.configure(config);
+  newCthulhu.start();
+}
+else if (port){
+  var newCthulhu = cthulhu.configure({
+    port: argv.port || port,
+    views: path.resolve(process.cwd(), argv.views)
+  });
+
+  // Render index file in views directory
+  newCthulhu.use(function(req, res) {
+    res.render('index');
+  });
+}
+else {
+  throw new Error('Must create cthulhu.conf.js file.');
+}
 
 const cli = new Liftoff({
   name: 'cthulhu'
 });
 
-const newCthulhu = cthulhu.configure({
-  port: argv.port,
-  views: path.resolve(process.cwd(), argv.views)
-});
-
-newCthulhu.use(function(req, res) {
-  return res.render('index');
-});
-
 const invoke = function(env) {
   newCthulhu.start();
-  console.log('Cthulhu is rising at port:', argv.port);
 };
 
 cli.launch({}, invoke);
