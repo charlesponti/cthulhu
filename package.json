@@ -1,15 +1,12 @@
 {
   "name": "cthulhu",
-  "version": "1.8.1",
-  "private": false,
-  "main": "src/index.js",
-  "author": "CJ Ponti <@cjponti>",
   "description": "An Express server with all the fixings",
-  "repository": "http://github.com/theponti/cthulhu",
-  "scripts": {
-    "example": "node example/index.js",
-    "test": "mocha --reporter spec"
+  "version": "1.8.1",
+  "author": "CJ Ponti <@cjponti>",
+  "bin": {
+    "cthulhu": "./bin/cthulhu.js"
   },
+  "bugs": "https://github.com/theponti/cthulhu/issues",
   "dependencies": {
     "body-parser": "^1.12.0",
     "compression": "^1.3.0",
@@ -35,5 +32,13 @@
     "chai": "^2.1.0",
     "mocha": "^2.1.0",
     "sinon": "^1.12.2"
+  },
+  "homepage": "https://github.com/theponti/cthulhu",
+  "main": "src/index.js",
+  "private": false,
+  "repository": "http://github.com/theponti/cthulhu",
+  "scripts": {
+    "example": "node example/index.js",
+    "test": "mocha --reporter spec"
   }
 }
