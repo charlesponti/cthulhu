@@ -127,7 +127,7 @@ cthulhu.configure = function(config) {
   if (cthulhu.logger) {
     cthulhu.use(morgan(morganConfig, {
       stream: {
-        write: function(message, encoding) {
+        write: function(message) {
           return cthulhu.logger.info(message)
         }
       }
