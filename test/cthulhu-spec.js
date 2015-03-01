@@ -9,6 +9,7 @@ describe('Cthulhu', function() {
   var app;
 
   beforeEach(function() {
+    process.env.INIT_DIR = './';
     app = cthulhu.configure({
       port: 1234,
       public: './',
