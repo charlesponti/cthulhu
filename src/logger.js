@@ -12,15 +12,18 @@ var mkdirp = require('mkdirp')
  * @return {winston.Logger}
  */
 module.exports = function(logConfig, config) {
-  var logFile = path.resolve(global._cwd, logConfig.dir+'/'+logConfig.file)
+  var logDirPath = logConfig.dir;
+  var logFilePath = logConfig.file;
+  var cwd = process.env.INIT_DIR;
+  var logFile = path.resolve(cwd, logDirPath+'/'+logFilePath)
 
   config = config || {};
   config.file = config.file || {};
   config.console = config.console || {};
 
   // If logs directory does not exist, create one
-  if (!fs.existsSync(path.resolve(global._cwd, logConfig.dir))) {
-    mkdirp.sync(path.resolve(global._cwd, logConfig.dir))
+  if (!fs.existsSync(path.resolve(cwd, logDirPath))) {
+    mkdirp.sync(path.resolve(cwd, logDirPath))
   }
 
   // If log file does not exist, create one.

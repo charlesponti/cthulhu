@@ -21,14 +21,14 @@ var util = require('util')
  * @type {String}
  * @private
  */
-global._env = process.env.NODE_ENV || 'development'
+process.env.NODE_ENV = process.env.NODE_ENV || 'development'
 
 /**
  * Current working directory from which cthulhu is being used.
  * @type {String}
  * @private
  */
-global._cwd = path.dirname(require.main.filename);
+process.env.INIT_DIR = process.cwd();
 
 /**
  * Application dependencies
@@ -98,7 +98,7 @@ cthulhu.configure = function(config) {
   }
 
   // If config.log, add `winston` logger to app
-  if (config.log.file) {
+  if (config.log && config.log.file) {
     cthulhu.logger = logger(config.log)
   }
 
@@ -106,7 +106,7 @@ cthulhu.configure = function(config) {
   if (config.public) {
     cthulhu.use(
       express.static(
-        path.resolve(global._cwd, config.public),
+        path.resolve(process.env.INIT_DIR, config.public),
         { maxAge: week } // TTL (Time To Live) for static files
       )
     )
@@ -158,6 +158,12 @@ cthulhu.configure = function(config) {
   }
 
   cthulhu.server = http.Server(cthulhu)
+
+  if (config.middleware) {
+    config.middleware.forEach(function(fn) {
+      cthulhu.use(fn);
+    });
+  }
 
   return cthulhu
 }

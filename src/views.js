@@ -7,7 +7,7 @@ module.exports = function(cthulhu, viewsDir) {
 
   // Set directory where views are stored.
   if (viewsDir) {
-    cthulhu.set('views', path.resolve(global._cwd, viewsDir));
+    cthulhu.set('views', path.resolve(process.env.INIT_DIR, viewsDir));
   }
 
   // Set view engine
