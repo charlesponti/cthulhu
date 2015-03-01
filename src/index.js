@@ -164,8 +164,8 @@ cthulhu.configure = function(config) {
 
 // Start Cthulhu.
 cthulhu.start = function() {
-  var port = cthulhu.get('port')
-  var env = cthulhu.get('env')
+  var env = cthulhu.get('env');
+  var port = cthulhu.get('port');
 
   // Add socket to app and begin listening.
   cthulhu.socket = io(cthulhu.server)
