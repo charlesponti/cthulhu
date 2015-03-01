@@ -8,7 +8,7 @@
   "repository": "http://github.com/theponti/cthulhu",
   "scripts": {
     "example": "node example/index.js",
-    "test": "mocha test"
+    "test": "mocha --reporter spec"
   },
   "dependencies": {
     "body-parser": "^1.12.0",
@@ -18,6 +18,7 @@
     "express": "^4.11.1",
     "express-session": "^1.10.1",
     "express-validator": "^2.8.0",
+    "liftoff": "^2.0.2",
     "lusca": "^1.0.1",
     "method-override": "*",
     "mkdirp": "^0.5.0",
