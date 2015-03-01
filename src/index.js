@@ -106,7 +106,7 @@ cthulhu.configure = function(config) {
   if (config.public) {
     cthulhu.use(
       express.static(
-        path.resolve(global._cwd, config.public),
+        path.resolve(process.env.INIT_DIR, config.public),
         { maxAge: week } // TTL (Time To Live) for static files
       )
     )
