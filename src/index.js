@@ -28,7 +28,7 @@ global._env = process.env.NODE_ENV || 'development'
  * @type {String}
  * @private
  */
-global._cwd = path.dirname(require.main.filename);
+global._cwd = process.cwd();
 
 /**
  * Application dependencies
