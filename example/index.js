@@ -14,7 +14,15 @@ cthulhu.configure({
   log: {
     dir: 'logs',
     file: 'all-logs.log'
-  }
+  },
+  middleware: [
+    function(req, res) {
+      return console.log('cats');
+    },
+    function(req, res) {
+      return res.render('index');
+    }
+  ]
 });
 
 cthulhu.use(function(req, res) {
