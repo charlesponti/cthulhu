@@ -127,7 +127,7 @@ cthulhu.configure = function(config) {
   if (cthulhu.logger) {
     cthulhu.use(morgan(morganConfig, {
       stream: {
-        write: function(message, encoding) {
+        write: function(message) {
           return cthulhu.logger.info(message)
         }
       }
@@ -164,8 +164,8 @@ cthulhu.configure = function(config) {
 
 // Start Cthulhu.
 cthulhu.start = function() {
-  var port = cthulhu.get('port')
-  var env = cthulhu.get('env')
+  var env = cthulhu.get('env');
+  var port = cthulhu.get('port');
 
   // Add socket to app and begin listening.
   cthulhu.socket = io(cthulhu.server)

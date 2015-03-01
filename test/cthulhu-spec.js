@@ -1,14 +1,14 @@
 'use strict';
 
-var fs = require('fs');
 var cthulhu = require('../src');
+var chai = require('chai');
+var assert = chai.assert;
 
 describe('Cthulhu', function() {
 
   var app;
 
   beforeEach(function() {
-    spyOn(fs, 'writeFileSync');
     app = cthulhu.configure({
       port: 1234,
       public: './',
@@ -24,15 +24,11 @@ describe('Cthulhu', function() {
     app = undefined;
   });
 
-  it('should call fs.writeFileSync', function() {
-    expect(fs.writeFileSync).toHaveBeenCalled();
-  });
-
   describe('.logger', function() {
     it('should exist', function() {
-      expect(app.logger).not.toEqual(undefined);
-      expect(app.logger.info).not.toEqual(undefined);
-      expect(app.logger.warn).not.toEqual(undefined);
+      assert.notEqual(app.logger, undefined);
+      assert.notEqual(app.logger.info, undefined);
+      assert.notEqual(app.logger.warn, undefined);
     });
   });
 
@@ -44,9 +40,9 @@ describe('Cthulhu', function() {
         file: 'bar.log',
         config: {}
       });
-      expect(app.loggers.foo).not.toEqual(undefined);
-      expect(app.loggers.foo.info).not.toEqual(undefined);
-      expect(app.loggers.foo.warn).not.toEqual(undefined);
+      assert.notEqual(app.loggers.foo, undefined);
+      assert.notEqual(app.loggers.foo.info, undefined);
+      assert.notEqual(app.loggers.foo.warn, undefined);
     });
   });
 

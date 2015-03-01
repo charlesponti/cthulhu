@@ -8,8 +8,7 @@
   "repository": "http://github.com/theponti/cthulhu",
   "scripts": {
     "example": "node example/index.js",
-    "test": "jasmine-node .",
-    "test-dev": "jasmine-node . --autotest"
+    "test": "mocha test"
   },
   "dependencies": {
     "body-parser": "^1.12.0",
@@ -30,9 +29,8 @@
     "winston": "^0.8.3"
   },
   "devDependencies": {
-    "gulp": "^3.8.7",
-    "gulp-jshint": "^1.8.4",
-    "jasmine-node": "^1.14.5",
-    "jshint-stylish": "^0.4.0"
+    "chai": "^2.1.0",
+    "mocha": "^2.1.0",
+    "sinon": "^1.12.2"
   }
 }
