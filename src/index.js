@@ -159,6 +159,12 @@ cthulhu.configure = function(config) {
 
   cthulhu.server = http.Server(cthulhu)
 
+  if (config.middleware) {
+    config.middleware.forEach(function(fn) {
+      cthulhu.use(fn);
+    });
+  }
+
   return cthulhu
 }
 
