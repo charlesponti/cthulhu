@@ -1,3 +1,7 @@
+
+var sinon = require('sinon');
+var assert = require('chai').assert;
+
 describe('Mailer', function() {
   'use strict';
 
@@ -10,7 +14,7 @@ describe('Mailer', function() {
       username: 'foo@foo.com',
       password: 'foobarbaz'
     });
-    spyOn(mailer.transporter, 'sendMail');
+    sinon.spy(mailer.transporter, 'sendMail');
   });
 
   afterEach(function() {
@@ -26,13 +30,13 @@ describe('Mailer', function() {
         html: 'fooHTML',
         text :'fooText'
       }, function() {});
-      var args = mailer.transporter.sendMail.mostRecentCall.args;
-      expect(mailer.transporter.sendMail).toHaveBeenCalled();
-      expect(args[0].from).toEqual('foo@foo.com');
-      expect(args[0].to).toEqual('foo@foo.com');
-      expect(args[0].subject).toEqual('fooSubject');
-      expect(args[0].text).toEqual('fooText');
-      expect(args[0].html).toEqual('fooHTML');
+      var args = mailer.transporter.sendMail.lastCall.args;
+      assert.equal(mailer.transporter.sendMail.called, true);
+      assert.equal(args[0].from, 'foo@foo.com');
+      assert.equal(args[0].to, 'foo@foo.com');
+      assert.equal(args[0].subject, 'fooSubject');
+      assert.equal(args[0].text, 'fooText');
+      assert.equal(args[0].html, 'fooHTML');
     });
   });
 
