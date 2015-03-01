@@ -15,11 +15,16 @@ if (fs.existsSync(configFilePath)) {
   var newCthulhu = cthulhu.configure(config);
   newCthulhu.start();
 }
-else if (port){
+else if (port) {
   var newCthulhu = cthulhu.configure({
     port: argv.port || port,
     views: path.resolve(process.cwd(), argv.views)
   });
+
+  // If --html5, add support for HTML5 pushState
+  if (argv.html5) {
+    newCthulhu.use(require('connect-history-api-fallback'));
+  }
 
   // Render index file in views directory
   newCthulhu.use(function(req, res) {
