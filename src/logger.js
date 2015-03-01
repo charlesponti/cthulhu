@@ -1,9 +1,9 @@
 'use strict';
 
-const fs = require('fs');
-const path = require('path');
-const winston = require('winston');
-const mkdirp = require('mkdirp')
+var fs = require('fs');
+var path = require('path');
+var winston = require('winston');
+var mkdirp = require('mkdirp')
 
 /**
  * Configure logger
@@ -12,12 +12,10 @@ const mkdirp = require('mkdirp')
  * @return {winston.Logger}
  */
 module.exports = function(logConfig, config) {
-  const logDirPath = logConfig.dir;
-  const logFilePath = logConfig.file;
-  const cwd = process.env.INIT_DIR;
-
-  console.log(cwd);
-  const logFile = path.resolve(cwd, logDirPath+'/'+logFilePath)
+  var logDirPath = logConfig.dir;
+  var logFilePath = logConfig.file;
+  var cwd = process.env.INIT_DIR;
+  var logFile = path.resolve(cwd, logDirPath+'/'+logFilePath)
 
   config = config || {};
   config.file = config.file || {};
