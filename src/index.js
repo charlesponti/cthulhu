@@ -1,20 +1,20 @@
-'use strict'
+import 'core-js/shim';
 
 /**
  * Module dependencies.
  * @type {exports}
  */
-var bodyParser = require('body-parser')
-var compress = require('compression')
-var cookieParser = require('cookie-parser')
-var express = require('express')
-var expressValidator = require('express-validator')
-var http = require('http')
-var io = require('socket.io')
-var methodOverride = require('method-override')
-var morgan = require('morgan')
-var path = require('path')
-var util = require('util')
+const bodyParser = require('body-parser')
+const compress = require('compression')
+const cookieParser = require('cookie-parser')
+const express = require('express')
+const expressValidator = require('express-validator')
+const http = require('http')
+const io = require('socket.io')
+const methodOverride = require('method-override')
+const morgan = require('morgan')
+const path = require('path')
+const util = require('util')
 
 /**
  * Current Node environment
