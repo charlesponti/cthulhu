@@ -34,15 +34,15 @@ process.env.INIT_DIR = process.cwd();
  * Application dependencies
  * @type {exports}
  */
-var mailer = require('./mailer')
-var logger = require('./logger')
+const mailer = require('./mailer')
+const logger = require('./logger')
 
-var hour = 3600000
-var day = hour * 24
-var week = day * 7
+const hour = 3600000
+const day = hour * 24
+const week = day * 7
 
 // Set cthulhu to base express application
-var cthulhu = express()
+const cthulhu = express()
 
 /**
  * Cthulhu application factory
