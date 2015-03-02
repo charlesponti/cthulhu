@@ -40,7 +40,9 @@
   "private": false,
   "repository": "http://github.com/theponti/cthulhu",
   "scripts": {
+    "build": "babel -d lib src",
     "example": "node example/index.js",
+    "prepublish": "npm run build",
     "test": "mocha --reporter spec"
   }
 }
