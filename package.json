@@ -30,6 +30,7 @@
     "yargs": "^3.4.4"
   },
   "devDependencies": {
+    "babel": "^4.6.3",
     "chai": "^2.1.0",
     "mocha": "^2.1.0",
     "sinon": "^1.12.2"
