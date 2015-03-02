@@ -59,9 +59,14 @@ cthulhu.configure = function(config) {
     'port'
   ]
 
-  // Check for required configuration options
+  /**
+   * Check for required configuration options. Throw error if any required
+   * fields are missing.
+   */
   requiredConfigs.forEach(function(requiredConfig) {
-    if (!config[requiredConfig]) throw new Error('Must supply '+requiredConfig)
+    if (!config[requiredConfig])
+      throw new Error(`Must supply ${requiredConfig}`);
+    return;
   })
 
   // Store value of config in private variable
