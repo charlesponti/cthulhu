@@ -1,6 +1,6 @@
 'use strict';
 
-var cthulhu = require('../src');
+var cthulhu = require('../lib');
 var chai = require('chai');
 var assert = chai.assert;
 

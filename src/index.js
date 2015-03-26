@@ -102,11 +102,6 @@ cthulhu.configure = function(config) {
     return cthulhu
   }
 
-  // If config.log, add `winston` logger to app
-  if (config.log && config.log.file) {
-    cthulhu.logger = logger(config.log)
-  }
-
   // Set folder for static files.
   if (config.public) {
     cthulhu.use(
@@ -129,7 +124,10 @@ cthulhu.configure = function(config) {
   // Add `morgan` for logging HTTP requests.
   var morganConfig = config.morgan || 'dev'
 
-  if (cthulhu.logger) {
+  // If config.log, add `winston` logger to app
+  if (config.log && config.log.file) {
+    cthulhu.logger = logger(config.log)
+
     cthulhu.use(morgan(morganConfig, {
       stream: {
         write: function(message) {
@@ -198,13 +196,13 @@ cthulhu.start = function() {
  * Export cthulhu
  * @type {express.Application}
  */
-exports = module.exports = cthulhu
+module.exports = cthulhu
 
 // Export mailer
-exports.Mailer = mailer
+export var Mailer = mailer
 
 /**
  * Export Router
  * @type {express.Router}
  */
-exports.Router = express.Router
+export var Router = express.Router

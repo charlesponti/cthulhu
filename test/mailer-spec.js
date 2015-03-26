@@ -6,7 +6,7 @@ describe('Mailer', function() {
   'use strict';
 
   var mailer;
-  var Mailer = require('../src/mailer');
+  var Mailer = require('../lib/mailer');
 
   beforeEach(function() {
     mailer = Mailer({
