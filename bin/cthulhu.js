@@ -13,7 +13,6 @@ const port = argv.p || argv.port;
 if (fs.existsSync(configFilePath)) {
   var config = require(configFilePath);
   var newCthulhu = cthulhu.configure(config);
-  newCthulhu.start();
 }
 else if (port) {
   var newCthulhu = cthulhu.configure({
