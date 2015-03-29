@@ -1,11 +1,12 @@
 'use strict';
 
+var path = require('path');
 var cthulhu = require('../entry');
 
 cthulhu.configure({
   port: 4000,
-  views: './views',
-  public: './public',
+  views: path.resolve(__dirname, './views'),
+  public: path.resolve(__dirname, './public'),
   session: {
     redisHost: 'localhost',
     redisPort: 6379,
