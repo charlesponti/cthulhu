@@ -9,7 +9,6 @@ const configFilePath = path.resolve(process.cwd(), './cthulhu.conf.js');
 
 const port = argv.p || argv.port;
 
-
 if (fs.existsSync(configFilePath)) {
   var config = require(configFilePath);
   var newCthulhu = cthulhu.configure(config);
@@ -17,7 +16,7 @@ if (fs.existsSync(configFilePath)) {
 else if (port) {
   var newCthulhu = cthulhu.configure({
     port: argv.port || port,
-    views: path.resolve(process.cwd(), argv.views)
+    views: path.resolve(process.cwd(), argv.views || 'views')
   });
 
   // If --html5, add support for HTML5 pushState
