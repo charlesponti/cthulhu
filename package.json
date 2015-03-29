@@ -1,7 +1,7 @@
 {
   "name": "cthulhu",
   "description": "An Express server with all the fixings",
-  "version": "1.9.2",
+  "version": "1.9.3",
   "author": "CJ Ponti <@cjponti>",
   "bin": {
     "cthulhu": "./bin/cthulhu.js"
