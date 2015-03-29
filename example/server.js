@@ -3,7 +3,7 @@
 var cthulhu = require('../entry');
 
 cthulhu.configure({
-  port: 3000,
+  port: 4000,
   views: './views',
   public: './public',
   session: {
@@ -16,10 +16,11 @@ cthulhu.configure({
     file: 'all-logs.log'
   },
   middleware: [
-    function(req, res) {
-      return console.log('cats');
+    function(req, res, next) {
+      console.log('cats');
+      return next();
     },
-    function(req, res) {
+    function(req, res, next) {
       return res.render('index');
     }
   ]
