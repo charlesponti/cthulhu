@@ -1,5 +1,3 @@
-import 'core-js/shim';
-
 /**
  * Module dependencies.
  * @type {exports}
@@ -96,7 +94,7 @@ cthulhu.configure = function(config) {
   cthulhu.addLogger = function(options) {
     cthulhu.loggers = cthulhu.loggers || {}
     cthulhu.loggers[options.name] = logger({
-      dir: options.dir, 
+      dir: options.dir,
       file: options.file
     }, config)
     return cthulhu
