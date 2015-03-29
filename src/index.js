@@ -63,7 +63,7 @@ cthulhu.configure = function(config) {
    */
   requiredConfigs.forEach(function(requiredConfig) {
     if (!config[requiredConfig])
-      throw new Error(`Must supply ${requiredConfig}`);
+      throw new Error('Must supply '+ requiredConfig);
     return;
   })
 
@@ -197,10 +197,10 @@ cthulhu.start = function() {
 module.exports = cthulhu
 
 // Export mailer
-export var Mailer = mailer
+exports.Mailer = mailer
 
 /**
  * Export Router
  * @type {express.Router}
  */
-export var Router = express.Router
+exports.Router = express.Router
