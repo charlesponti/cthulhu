@@ -1,6 +1,6 @@
 'use strict';
 
-var cthulhu = require('../src');
+var cthulhu = require('../entry');
 
 cthulhu.configure({
   port: 3000,
