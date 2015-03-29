@@ -60,7 +60,10 @@ Cthulhu is just the server portion, packed with all the stuff that I wish, and I
         secret: 'foo-bar-secret',
       },
       // File to output server log to (optional)
-      logFile: './logs/all-logs.log'
+      log: {
+        dir: path.resolve(__dirname, './logs')
+        file: 'all-logs.log'
+      }
     });
   ```
 
@@ -115,7 +118,10 @@ Cthulhu is just the server portion, packed with all the stuff that I wish, and I
   ```js
     var app = require('cthulhu')({
       // ...
-      logFile: './logs/all-logs.log',
+      log: {
+        dir: path.resolve(__dirname, './logs')
+        file: 'all-logs.log'
+      }
       // ...
     });
 
