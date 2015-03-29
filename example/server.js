@@ -13,7 +13,7 @@ cthulhu.configure({
     secret: 'foo-bar'
   },
   log: {
-    dir: 'logs',
+    dir: path.resolve(__dirname, './logs'),
     file: 'all-logs.log'
   },
   middleware: [
