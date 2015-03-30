@@ -20,11 +20,6 @@ else if (port) {
     views: path.resolve(process.cwd(), argv.views || '.')
   });
 
-  // If --html5, add support for HTML5 pushState
-  if (argv.html5) {
-    newCthulhu.use(require('connect-history-api-fallback'));
-  }
-
   // Render index file in views directory
   newCthulhu.use(function(req, res) {
     res.render('index');
