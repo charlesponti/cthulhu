@@ -16,7 +16,8 @@ if (fs.existsSync(configFilePath)) {
 else if (port) {
   var newCthulhu = cthulhu.configure({
     port: argv.port || port,
-    views: path.resolve(process.cwd(), argv.views || 'views')
+    public: path.resolve(process.cwd(), argv.public || '.'),
+    views: path.resolve(process.cwd(), argv.views || '.')
   });
 
   // If --html5, add support for HTML5 pushState
