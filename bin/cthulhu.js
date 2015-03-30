@@ -7,15 +7,13 @@ const Liftoff = require('liftoff');
 const cthulhu = require('../src');
 const configFilePath = path.resolve(process.cwd(), './cthulhu.conf.js');
 
-const port = argv.p || argv.port;
-
 if (fs.existsSync(configFilePath)) {
   var config = require(configFilePath);
   var newCthulhu = cthulhu.configure(config);
 }
-else if (port) {
+else {
   var newCthulhu = cthulhu.configure({
-    port: argv.port || port,
+    port: argv.p || argv.port || 3000,
     public: path.resolve(process.cwd(), argv.public || '.'),
     views: path.resolve(process.cwd(), argv.views || '.')
   });
