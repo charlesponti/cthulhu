@@ -23,9 +23,6 @@ else {
     res.render('index');
   });
 }
-else {
-  throw new Error('Must create cthulhu.conf.js file.');
-}
 
 const cli = new Liftoff({
   name: 'cthulhu'
