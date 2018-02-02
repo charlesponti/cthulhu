@@ -1,12 +1,15 @@
-'use strict';
+const uuid = require('uuid')
+const redis = require('redis')
+const session = require('express-session')
+const RedisStore = require('connect-redis')(session)
 
-var redis = require('redis');
-var expressSession = require('express-session');
-var RedisStore = require('connect-redis')(expressSession);
+module.exports = function (cthulhu, config) {
+  if (config.secret === void 0) throw Error('Must provide `secret` in configuration')
 
-module.exports = function(cthulhu, config) {
-
-  cthulhu.use(expressSession({
+  cthulhu.use(session({
+    genid: function (req) {
+      return uuid.v4()
+    },
     // Do not save session if nothing has been modified
     resave: false,
     // Do not create session unless something is to be stored
@@ -17,7 +20,5 @@ module.exports = function(cthulhu, config) {
       port: config.redisPort,
       client: redis.createClient()
     })
-  }));
-
-  return;
-};
+  }))
+}

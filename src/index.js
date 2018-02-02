@@ -2,17 +2,20 @@
  * Module dependencies.
  * @type {exports}
  */
+const { schema } = require('./schema/schema.js') // your GraphQL schema
+const { graphql } = require('graphql')
 const bodyParser = require('body-parser')
+const express = require('express')
 const compress = require('compression')
 const cookieParser = require('cookie-parser')
-const express = require('express')
 const expressValidator = require('express-validator')
 const http = require('http')
 const io = require('socket.io')
 const methodOverride = require('method-override')
 const morgan = require('morgan')
 const path = require('path')
-const util = require('util')
+const winston = require('winston')
+const auth = require('./auth.js') // see snippet below
 
 /**
  * Current Node environment
@@ -26,7 +29,7 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development'
  * @type {String}
  * @private
  */
-process.env.INIT_DIR = process.cwd();
+process.env.INIT_DIR = process.cwd()
 
 /**
  * Application dependencies
@@ -47,8 +50,7 @@ const cthulhu = express()
  * @param {object} config Initial configuration of application
  * @return {object} application
  */
-cthulhu.configure = function(config) {
-
+cthulhu.configure = function (config) {
   /**
    * @desc Required configuration settings
    * @type {Array}
@@ -61,10 +63,10 @@ cthulhu.configure = function(config) {
    * Check for required configuration options. Throw error if any required
    * fields are missing.
    */
-  requiredConfigs.forEach(function(requiredConfig) {
-    if (!config[requiredConfig])
-      throw new Error('Must supply '+ requiredConfig);
-    return;
+  requiredConfigs.forEach(function (requiredConfig) {
+    if (!config[requiredConfig]) {
+      throw new Error('Must supply ' + requiredConfig)
+    }
   })
 
   // Store value of config in private variable
@@ -91,7 +93,7 @@ cthulhu.configure = function(config) {
    * @param {object} config Logger configuration
    * @type {Function}
    */
-  cthulhu.addLogger = function(options) {
+  cthulhu.addLogger = function (options) {
     cthulhu.loggers = cthulhu.loggers || {}
     cthulhu.loggers[options.name] = logger({
       dir: options.dir,
@@ -113,9 +115,6 @@ cthulhu.configure = function(config) {
   // Configure views
   require('./views')(cthulhu, config.views)
 
-  // Disable view caching
-  cthulhu.set('view cache', false)
-
   // Add `compression` for compressing responses.
   cthulhu.use(compress())
 
@@ -123,12 +122,13 @@ cthulhu.configure = function(config) {
   var morganConfig = config.morgan || 'dev'
 
   // If config.log, add `winston` logger to app
+  // TODO Use `winston` for logging
   if (config.log && config.log.file) {
     cthulhu.logger = logger(config.log)
 
     cthulhu.use(morgan(morganConfig, {
       stream: {
-        write: function(message) {
+        write: function (message) {
           return cthulhu.logger.info(message)
         }
       }
@@ -136,6 +136,22 @@ cthulhu.configure = function(config) {
   } else {
     cthulhu.use(morgan(morganConfig))
   }
+
+  // Enable session middleware
+  // PassportJS's session piggy-backs on express-session
+  require('./session')(cthulhu, config.session)
+
+  // Enable security middleware
+  require('./security')(cthulhu, config.lusca)
+
+  auth.configure(cthulhu)
+
+  cthulhu.post('/graphql', (req, res) => {
+    graphql(schema, req.body, { user: req.user })
+      .then((data) => {
+        res.send(JSON.stringify(data))
+      })
+  })
 
   // Add `body-parser` for parsing request body
   cthulhu.use(bodyParser.json())
@@ -151,39 +167,32 @@ cthulhu.configure = function(config) {
   // Add cookie-parser
   cthulhu.use(cookieParser())
 
-  if (config.sessionSecret) {
-    // Enable session middleware
-    cthulhu.use(require('./session')(cthulhu, config.session))
-    // Enable security middleware
-    cthulhu.use(require('./security')(cthulhu, config.lusca))
-  }
-
   cthulhu.server = http.Server(cthulhu)
 
   if (config.middleware) {
-    config.middleware.forEach(function(fn) {
-      cthulhu.use(fn);
-    });
+    config.middleware.forEach(function (fn) {
+      cthulhu.use(fn)
+    })
   }
 
   return cthulhu
 }
 
 // Start Cthulhu.
-cthulhu.start = function() {
-  var env = cthulhu.get('env');
-  var port = cthulhu.get('port');
+cthulhu.start = function () {
+  var env = cthulhu.get('env')
+  var port = cthulhu.get('port')
 
   // Add socket to app and begin listening.
   cthulhu.socket = io(cthulhu.server)
 
   // Start application server.
-  cthulhu.server.listen(port, function() {
-    return util.log('Cthulhu has risen at port '+port+' in '+env+' mode')
+  cthulhu.server.listen(port, function () {
+    return winston.info('Cthulhu has risen at port ' + port + ' in ' + env + ' mode')
   })
 
   // Emit initial message
-  cthulhu.socket.on('connection', function(socket) {
+  cthulhu.socket.on('connection', function (socket) {
     return socket.emit('message', { message: 'Cthulhu has you in her grips.' })
   })
 

@@ -1,16 +1,15 @@
-'use strict';
+'use strict'
 
-var lusca = require('lusca');
+var lusca = require('lusca')
 
-module.exports = function(cthulhu, luscaConfig) {
-
+module.exports = function (cthulhu, luscaConfig) {
   // Enable Lusca security
   cthulhu.use(lusca(luscaConfig || {
     csrf: true,
     csp: {
       default_src: "'self'",
-      script_src:  "'self'",
-      image_src: "'self'",
+      script_src: "'self'",
+      image_src: "'self'"
     },
     xframe: 'SAMEORIGIN',
     p3p: 'ABCDEF',
@@ -19,6 +18,5 @@ module.exports = function(cthulhu, luscaConfig) {
       includeSubDomains: true
     },
     xssProtection: true
-  }));
-
+  }))
 }

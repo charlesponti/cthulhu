@@ -1,8 +1,8 @@
-'use strict';
+'use strict'
 
-var fs = require('fs');
-var path = require('path');
-var winston = require('winston');
+var fs = require('fs')
+var path = require('path')
+var winston = require('winston')
 var mkdirp = require('mkdirp')
 
 /**
@@ -11,15 +11,15 @@ var mkdirp = require('mkdirp')
  * @param  {object} config Configuration for transports
  * @return {winston.Logger}
  */
-module.exports = function(logConfig, config) {
-  var logDirPath = logConfig.dir;
-  var logFilePath = logConfig.file;
-  var cwd = process.env.INIT_DIR;
-  var logFile = path.resolve(cwd, logDirPath+'/'+logFilePath)
+module.exports = function (logConfig, config) {
+  var logDirPath = logConfig.dir
+  var logFilePath = logConfig.file
+  var cwd = process.env.INIT_DIR
+  var logFile = path.resolve(cwd, logDirPath + '/' + logFilePath)
 
-  config = config || {};
-  config.file = config.file || {};
-  config.console = config.console || {};
+  config = config || {}
+  config.file = config.file || {}
+  config.console = config.console || {}
 
   // If logs directory does not exist, create one
   if (!fs.existsSync(path.resolve(cwd, logDirPath))) {
@@ -28,10 +28,10 @@ module.exports = function(logConfig, config) {
 
   // If log file does not exist, create one.
   if (!fs.existsSync(logFile)) {
-    fs.writeFileSync(logFile);
+    fs.writeFileSync(logFile)
   }
 
-  winston.emitErrs = true;
+  winston.emitErrs = true
 
   var logger = new winston.Logger({
     transports: [
@@ -52,7 +52,7 @@ module.exports = function(logConfig, config) {
       })
     ],
     exitOnError: false
-  });
+  })
 
-  return logger;
-};
+  return logger
+}

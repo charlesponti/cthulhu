@@ -1,10 +1,10 @@
-'use strict';
+'use strict'
 
 /**
  * Module dependencies
  */
-var util = require('util');
-var nodemailer = require('nodemailer');
+var nodemailer = require('nodemailer')
+const winston = require('winston')
 
 /**
  * Factory function for constructing a mailer
@@ -22,24 +22,22 @@ var nodemailer = require('nodemailer');
  *   });
  * ```
  */
-module.exports = function Mailer(config) {
-
-  var mailer = {};
+module.exports = function Mailer (config) {
+  var mailer = {}
 
   var requiredFields = [
     'service',
     'username',
     'password'
-  ];
+  ]
 
   // Check for necessary configurations
-  requiredFields.forEach(function(field) {
+  requiredFields.forEach(function (field) {
     if (!config[field]) {
-      util.log('Must supply Mailer with '+field);
-      throw new Error('Must supply Mailer with '+field);
+      winston.error('Must supply Mailer with ' + field)
+      throw new Error('Must supply Mailer with ' + field)
     }
-    return;
-  });
+  })
 
   // Set transport to mailer which is the configuration of the service
   // being used for sending mail.
@@ -49,10 +47,10 @@ module.exports = function Mailer(config) {
       user: config.username,
       pass: config.password
     }
-  };
+  }
 
   // Set transporter to mailer used for sending mail
-  mailer.transporter = nodemailer.createTransport(mailer.transport);
+  mailer.transporter = nodemailer.createTransport(mailer.transport)
 
   /**
    * Callback to be executed if error occurs
@@ -61,13 +59,13 @@ module.exports = function Mailer(config) {
    * @param {Object} info
    * @returns {*}
    */
-   mailer.sendMailCallback = function(callback, error, info) {
+  mailer.sendMailCallback = function (callback, error, info) {
     if (error) {
-      return util.log(error);
+      return winston.error(error)
     }
-    util.log('Message sent: ' + info.response);
-    return callback();
-  };
+    winston.info('Message sent: ' + info.response)
+    return callback()
+  }
 
   /**
    * Send mail with defined transport object
@@ -78,16 +76,15 @@ module.exports = function Mailer(config) {
    *     @param {String} config.html HTML body
    * @param {function} callback Callback to be executed after mail is sent
    */
-   mailer.sendMail = function(config, callback) {
+  mailer.sendMail = function (config, callback) {
     return mailer.transporter.sendMail({
       from: config.from,
       to: config.to,
       subject: config.subject,
       text: config.text,
       html: config.html
-    }, mailer.sendMailCallback.bind(mailer, callback));
-  };
+    }, mailer.sendMailCallback.bind(mailer, callback))
+  }
 
-  return mailer;
-
-};
+  return mailer
+}
