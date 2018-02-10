@@ -1,7 +1,7 @@
 'use strict';
 
 var path = require('path');
-var cthulhu = require('../entry');
+var cthulhu = require('../dist/index')
 
 cthulhu.configure({
   port: 4000,

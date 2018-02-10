@@ -39,7 +39,7 @@
     "sinon": "^4.1.2"
   },
   "homepage": "https://github.com/theponti/cthulhu",
-  "main": "entry.js",
+  "main": "dist/index.js",
   "private": false,
   "repository": "http://github.com/theponti/cthulhu",
   "scripts": {
