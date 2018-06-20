@@ -1,9 +1,19 @@
-'use strict'
+const express = require('express')
+const path = require('path')
+const swig = require('swig')
 
-var path = require('path')
-var swig = require('swig')
+const hour = 3600000
+const day = hour * 24
+const week = day * 7
 
 module.exports = function (cthulhu, viewsDir) {
+  cthulhu.use(
+    express.static(
+      path.resolve(`${process.env.INIT_DIR}/public`),
+      { maxAge: week } // TTL (Time To Live) for static files
+    )
+  )
+
   // Set directory where views are stored.
   if (viewsDir) {
     cthulhu.set('views', path.resolve(process.env.INIT_DIR, viewsDir))

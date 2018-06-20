@@ -1,28 +1,37 @@
-/**
- * Module dependencies.
- * @type {exports}
- */
-const { schema } = require('./schema/schema.js') // your GraphQL schema
 const { graphql } = require('graphql')
 const bodyParser = require('body-parser')
 const express = require('express')
-const compress = require('compression')
 const cookieParser = require('cookie-parser')
 const expressValidator = require('express-validator')
 const http = require('http')
 const io = require('socket.io')
 const methodOverride = require('method-override')
 const morgan = require('morgan')
-const path = require('path')
 const winston = require('winston')
-const auth = require('./auth.js') // see snippet below
+const compression = require('compression')
 
 /**
- * Current Node environment
- * @type {String}
- * @private
+ * Application dependencies
+ * @type {exports}
  */
-process.env.NODE_ENV = process.env.NODE_ENV || 'development'
+const views = require('./views')
+const logger = require('./logger')
+const security = require('./security')
+const session = require('./session')
+
+// Set cthulhu to base express application
+const cthulhu = express()
+
+/**
+  * Current Node environment
+  * Set env to 'development' if none declared
+  * @type {String}
+  * @private
+  */
+const NODE_ENV = process.env.NODE_ENV || 'development'
+
+const __PROD__ = NODE_ENV === 'production'
+const __TEST__ = NODE_ENV === 'test'
 
 /**
  * Current working directory from which cthulhu is being used.
@@ -30,20 +39,6 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development'
  * @private
  */
 process.env.INIT_DIR = process.cwd()
-
-/**
- * Application dependencies
- * @type {exports}
- */
-const mailer = require('./mailer')
-const logger = require('./logger')
-
-const hour = 3600000
-const day = hour * 24
-const week = day * 7
-
-// Set cthulhu to base express application
-const cthulhu = express()
 
 /**
  * Cthulhu application factory
@@ -55,9 +50,11 @@ cthulhu.configure = function (config) {
    * @desc Required configuration settings
    * @type {Array}
    */
-  var requiredConfigs = [
+  const requiredConfigs = [
     'port'
   ]
+
+  const { schema } = config // your GraphQL schema
 
   /**
    * Check for required configuration options. Throw error if any required
@@ -75,16 +72,37 @@ cthulhu.configure = function (config) {
   // Set port
   cthulhu.set('port', config.port)
 
+  // Add `compression` for compressing responses.
+  cthulhu.use(compression())
+
   /**
    * Allow for the use of HTTP verbs such as PUT or DELETE in places
    * where the client doesn't support it.
    */
   cthulhu.use(methodOverride())
 
-  // If config.mailer, add `nodemailer` to cthulhu
-  if (config.mailer) {
-    cthulhu.mailer = mailer(config.mailer)
-  }
+  cthulhu.disable('x-powered-by')
+
+  // Add `body-parser` for parsing request body
+  cthulhu.use(bodyParser.json())
+  cthulhu.use(bodyParser.urlencoded({ extended: true }))
+
+  // Enable session middleware
+  // PassportJS's session piggy-backs on express-session
+  session(cthulhu, config.session)
+
+  // Enable security middleware
+  security(cthulhu)
+
+  /**
+   * Add `express-validator`
+   * This module allows values in req.body to be validated with the use of
+   * helper methods.
+   */
+  cthulhu.use(expressValidator())
+
+  // Add cookie-parser
+  cthulhu.use(cookieParser())
 
   /**
    * Add function for creating new winston logs
@@ -103,48 +121,15 @@ cthulhu.configure = function (config) {
   }
 
   // Set folder for static files.
-  if (config.public) {
-    cthulhu.use(
-      express.static(
-        path.resolve(process.env.INIT_DIR, config.public),
-        { maxAge: week } // TTL (Time To Live) for static files
-      )
-    )
+  if (config.views) {
+    views(cthulhu, config.views)
   }
 
-  // Configure views
-  require('./views')(cthulhu, config.views)
-
-  // Add `compression` for compressing responses.
-  cthulhu.use(compress())
-
-  // Add `morgan` for logging HTTP requests.
-  var morganConfig = config.morgan || 'dev'
-
-  // If config.log, add `winston` logger to app
-  // TODO Use `winston` for logging
-  if (config.log && config.log.file) {
-    cthulhu.logger = logger(config.log)
-
-    cthulhu.use(morgan(morganConfig, {
-      stream: {
-        write: function (message) {
-          return cthulhu.logger.info(message)
-        }
-      }
-    }))
+  if (__PROD__ || __TEST__) {
+    cthulhu.use(morgan('combined'))
   } else {
-    cthulhu.use(morgan(morganConfig))
+    cthulhu.use(morgan('dev'))
   }
-
-  // Enable session middleware
-  // PassportJS's session piggy-backs on express-session
-  require('./session')(cthulhu, config.session)
-
-  // Enable security middleware
-  require('./security')(cthulhu, config.lusca)
-
-  auth.configure(cthulhu)
 
   cthulhu.post('/graphql', (req, res) => {
     graphql(schema, req.body, { user: req.user })
@@ -152,20 +137,6 @@ cthulhu.configure = function (config) {
         res.send(JSON.stringify(data))
       })
   })
-
-  // Add `body-parser` for parsing request body
-  cthulhu.use(bodyParser.json())
-  cthulhu.use(bodyParser.urlencoded({ extended: true }))
-
-  /**
-   * Add `express-validator`
-   * This module allows values in req.body to be validated with the use of
-   * helper methods.
-   */
-  cthulhu.use(expressValidator())
-
-  // Add cookie-parser
-  cthulhu.use(cookieParser())
 
   cthulhu.server = http.Server(cthulhu)
 
@@ -180,8 +151,8 @@ cthulhu.configure = function (config) {
 
 // Start Cthulhu.
 cthulhu.start = function () {
-  var env = cthulhu.get('env')
-  var port = cthulhu.get('port')
+  const env = cthulhu.get('env')
+  const port = cthulhu.get('port')
 
   // Add socket to app and begin listening.
   cthulhu.socket = io(cthulhu.server)
@@ -204,12 +175,3 @@ cthulhu.start = function () {
  * @type {express.Application}
  */
 module.exports = cthulhu
-
-// Export mailer
-exports.Mailer = mailer
-
-/**
- * Export Router
- * @type {express.Router}
- */
-exports.Router = express.Router

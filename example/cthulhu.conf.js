@@ -1,5 +1,3 @@
-'use strict';
-
 module.exports = {
 
   port: 3000,
@@ -11,10 +9,14 @@ module.exports = {
     file: './all-logs.log'
   },
 
+  session: {
+    secret: 'foobar'
+  },
+
   middleware: [
-    function(req, res) {
-      return res.render('index');
+    function (req, res) {
+      return res.render('index')
     }
   ]
 
-};
+}
