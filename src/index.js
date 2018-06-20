@@ -125,10 +125,10 @@ cthulhu.configure = function (config) {
     views(cthulhu, config.views)
   }
 
-  if (__PROD__ || __TEST__) {
-    cthulhu.use(morgan('combined'))
-  } else {
-    cthulhu.use(morgan('dev'))
+  cthulhu.use(morgan(__PROD__ || __TEST__ ? 'combined' : 'dev'))
+
+  if (config.middleware) {
+    config.middleware.forEach(fn => cthulhu.use(fn))
   }
 
   cthulhu.post('/graphql', (req, res) => {
@@ -139,12 +139,6 @@ cthulhu.configure = function (config) {
   })
 
   cthulhu.server = http.Server(cthulhu)
-
-  if (config.middleware) {
-    config.middleware.forEach(function (fn) {
-      cthulhu.use(fn)
-    })
-  }
 
   return cthulhu
 }

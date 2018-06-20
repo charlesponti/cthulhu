@@ -22,12 +22,17 @@ module.exports = function (cthulhu) {
    *
    * Furthermore, parsers must be registered before lusca.
    */
-  cthulhu.use(lusca.csrf())
+  cthulhu.use(lusca.csrf(true))
 
   /**
    * @description Enables Content Security Policy (CSP) headers
    */
-  cthulhu.use(lusca.csp())
+  cthulhu.use(lusca.csp({
+    policy: {
+      'default-src': '\'self\'',
+      'img-src': '*'
+    }
+  }))
 
   /**
    * @description Enables X-FRAME-OPTIONS headers to help prevent Clickjacking.

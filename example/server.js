@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-var path = require('path');
+var path = require('path')
 var cthulhu = require('../dist/index')
 
 cthulhu.configure({
@@ -17,18 +17,18 @@ cthulhu.configure({
     file: 'all-logs.log'
   },
   middleware: [
-    function(req, res, next) {
-      console.log('cats');
-      return next();
+    function (req, res, next) {
+      console.log('cats')
+      return next()
     },
-    function(req, res, next) {
-      return res.render('index');
+    function (req, res, next) {
+      return res.render('index')
     }
   ]
-});
+})
 
-cthulhu.use(function(req, res) {
-  return res.render('index');
-});
+cthulhu.use(function (req, res) {
+  return res.render('index')
+})
 
-cthulhu.start();
+cthulhu.start()
