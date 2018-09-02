@@ -1,7 +1,7 @@
 'use strict'
 
 var path = require('path')
-var cthulhu = require('../dist/index')
+var cthulhu = require('../build/server')
 
 cthulhu.configure({
   port: 4000,
@@ -25,10 +25,6 @@ cthulhu.configure({
       return res.render('index')
     }
   ]
-})
-
-cthulhu.use(function (req, res) {
-  return res.render('index')
 })
 
 cthulhu.start()

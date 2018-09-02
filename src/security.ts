@@ -1,17 +1,17 @@
-const lusca = require('lusca')
-const hpp = require('hpp')
-const frameguard = require('frameguard')
+import frameguard from "frameguard";
+import * as hpp from "hpp";
+import * as lusca from "lusca";
 
-module.exports = function (cthulhu) {
+export default function(cthulhu) {
   /**
    * Reference: https://github.com/analog-nico/hpp
    * @description Express middleware to protect against HTTP Parameter Pollution attacks
    */
-  cthulhu.use(hpp())
+  cthulhu.use(hpp());
 
   // Reference: https://github.com/helmetjs/frameguard
   // Don't allow me to be in ANY frames:
-  cthulhu.use(frameguard({ action: 'deny' }))
+  cthulhu.use(frameguard({ action: "deny" }));
 
   /**
    * Enables Cross Site Request Forgery (CSRF) headers.
@@ -22,27 +22,27 @@ module.exports = function (cthulhu) {
    *
    * Furthermore, parsers must be registered before lusca.
    */
-  cthulhu.use(lusca.csrf(true))
+  cthulhu.use(lusca.csrf());
 
   /**
    * @description Enables Content Security Policy (CSP) headers
    */
   cthulhu.use(lusca.csp({
     policy: {
-      'default-src': '\'self\'',
-      'img-src': '*'
-    }
-  }))
+      "default-src": "'self'",
+      "img-src": "*",
+    },
+  }));
 
   /**
    * @description Enables X-FRAME-OPTIONS headers to help prevent Clickjacking.
    */
-  cthulhu.use(lusca.xframe('SAMEORIGIN'))
+  cthulhu.use(lusca.xframe("SAMEORIGIN"));
 
   /**
    * @description Enables Platform for Privacy Preferences Project (P3P) headers.
    */
-  cthulhu.use(lusca.p3p('ABCDEF'))
+  cthulhu.use(lusca.p3p("ABCDEF"));
 
   /**
    * @description Enables HTTP Strict Transport Security for the host domain.
@@ -50,32 +50,31 @@ module.exports = function (cthulhu) {
    * preload list.
    */
   cthulhu.use(lusca.hsts({
-    maxAge: 10886400, // Must be at least 18 weeks to be approved by Google
     includeSubDomains: true, // Must be enabled to be approved by Google
+    maxAge: 10886400, // Must be at least 18 weeks to be approved by Google
     /**
      * Chrome lets you submit your site for baked-into-Chrome HSTS by adding preload to the
      * header. You can add that with the following code, and then submit your site to the
      * Chrome team at https://hstspreload.org/.
      */
     preload: true,
-    force: true // ALWAYS set the header
-  }))
+  }));
 
   /**
    * @description Middleware to set the X-XSS-Protection header
    * Enables X-XSS-Protection headers to help prevent cross site scripting (XSS)
    * attacks in older IE browsers (IE8)
    */
-  cthulhu.use(lusca.xssProtection(true))
+  cthulhu.use(lusca.xssProtection(true));
 
   /**
    * @description Enables X-Content-Type-Options header to prevent MIME-sniffing
    * a response away from the declared content-type.
    */
-  cthulhu.use(lusca.nosniff())
+  cthulhu.use(lusca.nosniff());
 
   /**
    * @description Enables Referrer-Policy header to control the Referer header.
    */
-  cthulhu.use(lusca.referrerPolicy('same-origin'))
+  cthulhu.use(lusca.referrerPolicy("same-origin"));
 }
