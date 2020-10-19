@@ -46,6 +46,7 @@
   "devDependencies": {
     "@types/node": "^10.9.4",
     "mocha": "^5.2.0",
+    "nodemon": "^2.0.6",
     "sinon": "^6.1.5",
     "ts-node": "^7.0.1",
     "tslint": "^5.11.0",
@@ -58,6 +59,7 @@
   "scripts": {
     "build": "rimraf dist && tsc",
     "dev": "ts-node ./lib/server.ts",
+    "prestart": "npm run build",
     "start": "nodemon ./build/server.js",
     "prod": "npm run build && ndoe ./build/server.js",
     "test": "mocha --reporter spec"
