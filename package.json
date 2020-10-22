@@ -1,8 +1,8 @@
 {
   "name": "cthulhu",
-  "description": "An Express server with all the fixings",
-  "version": "1.9.5",
-  "author": "CJ Ponti <@cjponti>",
+  "description": "express graphql server",
+  "version": "0.0.1",
+  "author": "Charles Ponti <@cjponti>",
   "bin": {
     "cthulhu": "./bin/cthulhu.js"
   },
@@ -19,17 +19,21 @@
     "@types/morgan": "^1.7.35",
     "@types/socket.io": "^1.4.38",
     "@types/uuid": "^3.4.4",
+    "apollo-server": "^2.18.2",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "compression": "^1.7.3",
     "connect-redis": "^3.3.3",
     "cookie-parser": "^1.4.3",
+    "dotenv": "^8.2.0",
     "express": "^4.16.3",
+    "express-request-id": "^1.4.1",
     "express-session": "^1.15.6",
     "express-validator": "^5.3.0",
     "frameguard": "^3.0.0",
     "graphql": "^14.0.0",
-    "helmet": "^3.13.0",
     "hpp": "^0.2.2",
+    "jsonwebtoken": "^8.5.1",
     "liftoff": "^2.5.0",
     "lusca": "^1.6.1",
     "method-override": "^3.0.0",
@@ -38,13 +42,18 @@
     "nodemailer": "^4.6.8",
     "redis": "^2.8.0",
     "rimraf": "^2.6.2",
+    "sequelize": "^6.3.5",
     "socket.io": "^2.1.1",
+    "sqlite3": "^5.0.0",
     "uuid": "^3.3.2",
     "winston": "^3.0.0",
     "yargs": "^12.0.1"
   },
   "devDependencies": {
     "@types/node": "^10.9.4",
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-0": "^6.24.1",
     "mocha": "^5.2.0",
     "nodemon": "^2.0.6",
     "sinon": "^6.1.5",
@@ -59,9 +68,10 @@
   "scripts": {
     "build": "rimraf dist && tsc",
     "dev": "ts-node ./lib/server.ts",
+    "migrate": "sequelize db:migrate",
     "prestart": "npm run build",
     "start": "nodemon ./build/server.js",
-    "prod": "npm run build && ndoe ./build/server.js",
+    "prod": "npm run build && node ./build/server.js",
     "test": "mocha --reporter spec"
   }
 }
