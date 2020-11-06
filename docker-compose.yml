@@ -1,0 +1,16 @@
+version: "3.1"
+
+services:
+  db:
+    image: postgres:latest
+    volumes:
+      - cthulhu-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: cthulhu
+    ports:
+      - "5432:5432"
+
+volumes:
+  cthulhu-data:
