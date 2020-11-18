@@ -1,9 +1,9 @@
 export interface HelloRequest {
-  input: string;
+  name: string;
 }
 
 export default {
-  hello(root: any, {input}: HelloRequest): string {
-    return `Hello ${input}`;
+  hello(root: any, {name}: HelloRequest): string {
+    return `Hello${name ? ` ${name}` : ''}!`;
   },
 };
