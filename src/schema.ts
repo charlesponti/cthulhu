@@ -2,7 +2,7 @@ import {gql} from 'apollo-server';
 
 export default gql`
   type Query {
-    hello(input: String): String
+    hello(name: String): String
   }
 
   type Mutation {
